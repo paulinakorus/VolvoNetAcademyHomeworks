@@ -25,7 +25,7 @@
                 //Console.WriteLine(ifDouble(x, y));
                 if (!ifDouble(x, y))
                 {
-                    Console.WriteLine("Incorrect numbers\n");
+                    Console.WriteLine("Incorrect numbers\nTry again\n");
                     continuing = true;
                     Thread.Sleep(2000);
                 }
@@ -44,14 +44,17 @@
                     {
                         Console.WriteLine("result: " + result);
                         continuing = Answer();
-                        Thread.Sleep(1000);
+                        Thread.Sleep(2000);
                     } 
                     else
                     {
-                        Console.Clear();
+                        continuing = true;
+                        Console.WriteLine("Try again\n");
+                        Thread.Sleep(2000);
                     }
                 }
             }
+            Console.WriteLine("The end of the program");
         }
 
         static bool Answer()
@@ -83,9 +86,15 @@
 
         static bool ifDivision(string x, string y)
         {
-            if(ifDouble(x, y))
-                if(Convert.ToDouble(y) != 0.0)
-                    return true;
+            if (Convert.ToInt32(y) != 0)
+                return true;
+            return false;
+        }
+
+        static bool ifFactorial(string x)
+        {
+            if (Convert.ToInt32(x) >= 0)
+                return true;
             return false;
         }
 
@@ -140,30 +149,38 @@
         static string TheOperation(string x, string y)
         {
             bool correct = false;
-            bool correctNumber = true;
-            while (!correct && correctNumber)
+            while (!correct)
             {
                 Console.Write("\nthe operation: ");
                 var operation = Console.ReadLine();
+                bool correctNumber = true;
 
                 switch (operation)
                 {
                     case "+":
-                        correctNumber = ifDouble(x, y);
                         return Addition(x, y).ToString();
                     case "-":
-                        correctNumber = ifDouble(x, y);
                         return Subtration(x, y).ToString();
                     case "*":
-                        correctNumber = ifDouble(x, y);
                         return Multiplication(x, y).ToString();
                     case "/":
                         correctNumber = ifDivision(x, y);
-                        return Division(x, y).ToString();
+                        if (correctNumber)
+                        {
+                            return Division(x, y).ToString();
+                        }
+                        Console.WriteLine("The number in the denominator is zero");
+                        return null;
                     case "^":
                         return Exponentiation(x, y).ToString();
                     case "!":
-                        return Factorial(int.Parse(x)).ToString();
+                        correctNumber = ifFactorial(x);
+                        if (correctNumber)
+                        {
+                            return Factorial(int.Parse(x)).ToString();
+                        }
+                        Console.WriteLine("The number in below zero");
+                        return null;
                     default:
                         Console.WriteLine("The symbol is incorrect");
                         Console.WriteLine("Try again\n");
