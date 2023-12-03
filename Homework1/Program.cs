@@ -4,10 +4,11 @@
     {
         static void Main(string[] args)
         {
-            partOne();
+            PartOne();
+            PartTwo();
         }
 
-        static void partOne() {
+        static void PartOne() {
             bool continuing = true;
             
             while (continuing)
@@ -43,7 +44,7 @@
                     if (result != null)
                     {
                         Console.WriteLine("result: " + result);
-                        continuing = Answer();
+                        continuing = Answer(1);
                         Thread.Sleep(2000);
                     } 
                     else
@@ -57,12 +58,139 @@
             Console.WriteLine("The end of the program");
         }
 
-        static bool Answer()
+        static void PartTwo()
+        {
+            bool continuing = true;
+            while (continuing)
+            {
+                Console.Clear();
+                Console.WriteLine("Homework 1b");
+                Console.WriteLine("Calculating numbers from string input");
+
+                Console.WriteLine("\nPlease enter the line");
+                Console.Write("\tline: ");
+                var line = Console.ReadLine();
+
+                var operationIndeks = findOperation(line);
+                if (operationIndeks == -1)
+                {
+                    Console.WriteLine("Operation symbol doesn't exist\nTry again\n");
+                    Thread.Sleep(2000);
+                }
+                else
+                {
+                    var operation = line[operationIndeks];
+                    var x = line.Substring(0, operationIndeks);
+                    var y = line.Substring(operationIndeks + 1);
+
+                    if ((!ifDouble(x, x) || y != "") && operation == '!')
+                    {
+                        Console.WriteLine("The operation is incorrect\nTry again\n");
+                        Thread.Sleep(2000);
+                    }
+                    else if (!ifDouble(x, y) && operation != '!')
+                    {
+                        Console.WriteLine("Numbers are incorrect\nTry again\n");
+                        Thread.Sleep(2000);
+                    }
+                    else
+                    {
+                        string result = TheOperation2(x, y, operation);
+                        if (result != null)
+                        {
+                            Console.WriteLine("result: " + result);
+                            continuing = Answer(2);
+                            Thread.Sleep(2000);
+                        }
+                        else
+                        {
+                            continuing = true;
+                            Console.WriteLine("Try again\n");
+                            Thread.Sleep(2000);
+                        }
+                    }
+                }
+            }
+            Console.WriteLine("The end of the program");
+            Thread.Sleep(2000);
+        }
+
+        static int findOperation(string line)
+        {
+            var indeks = -1;
+
+            for (int i = 0; i < line.Length; i++)
+            {
+                if (ifOperation(line[i]))
+                {
+                    return indeks = i;
+                }
+            }
+            return indeks;
+        }
+
+        static bool ifOperation(char character)
+        {
+            switch (character)
+            {
+                case '+':
+                    return true;
+                case '-':
+                    return true;
+                case '*':
+                    return true;
+                case '/':
+                    return true;
+                case '^':
+                    return true;
+                case '!':
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        static string TheOperation2(string x, string y, char operation)
+        {
+            var correctNumber = true;
+            switch (operation)
+            {
+                case '+':
+                    return Addition(x, y).ToString();
+                case '-':
+                    return Subtration(x, y).ToString();
+                case '*':
+                    return Multiplication(x, y).ToString();
+                case '/':
+                    correctNumber = ifDivision(x, y);
+                    if (correctNumber)
+                    {
+                        return Division(x, y).ToString();
+                    }
+                    Console.WriteLine("The number in the denominator is zero");
+                    return null;
+                case '^':
+                    return Exponentiation(x, y).ToString();
+                case '!':
+                    correctNumber = ifFactorial(x);
+                    if (correctNumber)
+                    {
+                        return Factorial(int.Parse(x)).ToString();
+                    }
+                    Console.WriteLine("The number in below zero");
+                    return null;
+                default:
+                    return null;
+            }
+
+        }
+
+        static bool Answer(int part)
         {
             bool correct = false;
             while (!correct)
             {
-                Console.WriteLine("\nDo you want to continue?");
+                Console.WriteLine("\nDo you want to continue part " + part + " ?");
                 Console.Write("\tanswer (yes/no): ");
 
                 var ans = Console.ReadLine();
@@ -86,7 +214,7 @@
 
         static bool ifDivision(string x, string y)
         {
-            if (Convert.ToInt32(y) != 0)
+            if (Convert.ToDouble(y) != 0.0)
                 return true;
             return false;
         }
