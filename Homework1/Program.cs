@@ -4,9 +4,6 @@
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Homework 1");
-            Console.WriteLine("Calculating numbers");
-
             partOne();
         }
 
@@ -14,6 +11,9 @@
             bool continuing = true;
             while (continuing)
             {
+                Console.WriteLine("Homework 1a");
+                Console.WriteLine("Calculating numbers");
+
                 Console.WriteLine("\nPlease enter the numbers");
                 Console.Write("\tx: ");
                 var x = Console.ReadLine();
@@ -28,11 +28,40 @@
                 Console.WriteLine("\t^\t-\texponentiation");
                 Console.WriteLine("\t!\t-\tfactorial");
 
-                Console.Write("\nthe operation: ");
-                var operation = Console.ReadLine();
-                string result;
-                TheOperation(x, y, operation, out result);
+                string result = TheOperation(x, y);
+                if(result != null)
+                    Console.WriteLine("result: " + result);
+
+                continuing = Answer();
+                Console.Clear();
             }
+        }
+
+        static bool Answer()
+        {
+            bool correct = false;
+            while (!correct)
+            {
+                Console.WriteLine("\nDo you want to continue?");
+                Console.Write("\tanswer (yes/no): ");
+
+                var ans = Console.ReadLine();
+                ans = ans.ToUpper();
+
+                switch (ans)
+                {
+                    case "YES":
+                        return true;
+                    case "NO":
+                        return false;
+                    default:
+                        Console.WriteLine("Incorrect answer");
+                        Console.WriteLine("Try again\n");
+                        correct = false;
+                        break;
+                }
+            }
+            return false;
         }
 
         static double Addition(string x, string y)
@@ -68,42 +97,38 @@
             {
                 return x * Factorial((x - 1));
             }
-        } 
+        }
 
-        static void TheOperation (string x, string y, string operation, out string result)
+        static string TheOperation(string x, string y)
         {
-            switch (operation)
+            bool correct = false;
+            while (!correct)
             {
-                case "+":
-                    result = Addition(x, y).ToString();
-                    Console.WriteLine(result);
-                    break;
-                case "-":
-                    result = Subtration(x, y).ToString();
-                    Console.WriteLine(result);
-                    break;
-                case "*":
-                    result = Multiplication(x, y).ToString();
-                    Console.WriteLine(result);
-                    break;
-                case "/":
-                    result = Division(x, y).ToString();
-                    Console.WriteLine(result);
-                    break;
-                case "^":
-                    result = Exponentiation(x, y).ToString();
-                    Console.WriteLine(result);
-                    break;
-                case "!":
-                    result = Factorial(int.Parse(x)).ToString();
-                    Console.WriteLine(result);
-                    break;
-                default: 
-                    result = null;
-                    Console.WriteLine("The symbol is incorrect");
-                    Console.WriteLine("Try again\n");
-                    break;
+                Console.Write("\nthe operation: ");
+                var operation = Console.ReadLine();
+
+                switch (operation)
+                {
+                    case "+":
+                        return Addition(x, y).ToString();
+                    case "-":
+                        return Subtration(x, y).ToString();
+                    case "*":
+                        return Multiplication(x, y).ToString();
+                    case "/":
+                        return Division(x, y).ToString();
+                    case "^":
+                        return Exponentiation(x, y).ToString();
+                    case "!":
+                        return Factorial(int.Parse(x)).ToString();
+                    default:
+                        Console.WriteLine("The symbol is incorrect");
+                        Console.WriteLine("Try again\n");
+                        correct = false;
+                        break;
+                }
             }
+            return null;
         }
     }
 }
