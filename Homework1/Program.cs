@@ -9,8 +9,10 @@
 
         static void partOne() {
             bool continuing = true;
+            
             while (continuing)
             {
+                Console.Clear();
                 Console.WriteLine("Homework 1a");
                 Console.WriteLine("Calculating numbers");
 
@@ -20,20 +22,35 @@
                 Console.Write("\ty: ");
                 var y = Console.ReadLine();
 
-                Console.WriteLine("\nPlease enter the symbol of the operation");
-                Console.WriteLine("\t+\t-\taddition");
-                Console.WriteLine("\t-\t-\tsubtration");
-                Console.WriteLine("\t*\t-\tmultiplication");
-                Console.WriteLine("\t/\t-\tdivision");
-                Console.WriteLine("\t^\t-\texponentiation");
-                Console.WriteLine("\t!\t-\tfactorial");
+                //Console.WriteLine(ifDouble(x, y));
+                if (!ifDouble(x, y))
+                {
+                    Console.WriteLine("Incorrect numbers\n");
+                    continuing = true;
+                    Thread.Sleep(2000);
+                }
+                else
+                {
+                    Console.WriteLine("\nPlease enter the symbol of the operation");
+                    Console.WriteLine("\t+\t-\taddition");
+                    Console.WriteLine("\t-\t-\tsubtration");
+                    Console.WriteLine("\t*\t-\tmultiplication");
+                    Console.WriteLine("\t/\t-\tdivision");
+                    Console.WriteLine("\t^\t-\texponentiation");
+                    Console.WriteLine("\t!\t-\tfactorial");
 
-                string result = TheOperation(x, y);
-                if(result != null)
-                    Console.WriteLine("result: " + result);
-
-                continuing = Answer();
-                Console.Clear();
+                    string result = TheOperation(x, y);
+                    if (result != null)
+                    {
+                        Console.WriteLine("result: " + result);
+                        continuing = Answer();
+                        Thread.Sleep(1000);
+                    } 
+                    else
+                    {
+                        Console.Clear();
+                    }
+                }
             }
         }
 
@@ -62,6 +79,27 @@
                 }
             }
             return false;
+        }
+
+        static bool ifDivision(string x, string y)
+        {
+            if(ifDouble(x, y))
+                if(Convert.ToDouble(y) != 0.0)
+                    return true;
+            return false;
+        }
+
+        static bool ifDouble(string x, string y)
+        { 
+            var outX = 0.0;
+            var outY = 0.0;
+            var correctX = double.TryParse(x, out outX);
+            var correctY = double.TryParse(y, out outY);
+
+            if (correctX && correctY)
+                return true;
+            else
+                return false;
         }
 
         static double Addition(string x, string y)
@@ -102,7 +140,8 @@
         static string TheOperation(string x, string y)
         {
             bool correct = false;
-            while (!correct)
+            bool correctNumber = true;
+            while (!correct && correctNumber)
             {
                 Console.Write("\nthe operation: ");
                 var operation = Console.ReadLine();
@@ -110,12 +149,16 @@
                 switch (operation)
                 {
                     case "+":
+                        correctNumber = ifDouble(x, y);
                         return Addition(x, y).ToString();
                     case "-":
+                        correctNumber = ifDouble(x, y);
                         return Subtration(x, y).ToString();
                     case "*":
+                        correctNumber = ifDouble(x, y);
                         return Multiplication(x, y).ToString();
                     case "/":
+                        correctNumber = ifDivision(x, y);
                         return Division(x, y).ToString();
                     case "^":
                         return Exponentiation(x, y).ToString();
