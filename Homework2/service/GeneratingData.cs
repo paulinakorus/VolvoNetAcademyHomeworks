@@ -28,7 +28,7 @@ namespace Homework2.service
 
         public void GeneratingVehicles()
         {
-            Console.WriteLine("Generating Vehicles\n");
+            Console.WriteLine("Generating Vehicles");
             Console.Write("\tpassenger vehicles: ");
             PassengerVehicleNumber = Convert.ToInt32(Console.ReadLine());
 
@@ -41,29 +41,20 @@ namespace Homework2.service
             {
                 for (int i = 0; i < PassengerVehicleNumber; i++)
                 {
-                    Vehicle PassengerVehicle = new PassengerVehicle();
-                    PassengerVehicle = GenerateVehicleData(PassengerVehicle);
-                    vehicleFile.WriteLine(JsonSerializer.Serialize(PassengerVehicle));
+                    PassengerVehicle passengerVehicle = new PassengerVehicle();
+                    passengerVehicle = (PassengerVehicle)GenerateVehicleData(passengerVehicle);
+                    vehicleFile.WriteLine(JsonSerializer.Serialize(passengerVehicle));
                 }
 
                 for (int i = 0; i < CargoVehicleNumber; i++)
                 {
-                    Vehicle CargoVehicle = new PassengerVehicle();
-                    CargoVehicle = GenerateVehicleData(CargoVehicle);
-                    vehicleFile.WriteLine(JsonSerializer.Serialize(CargoVehicle));
+                    CargoVehicle cargoVehicle = new CargoVehicle(random.Next(1,10)*1000);
+                    cargoVehicle = (CargoVehicle)GenerateVehicleData(cargoVehicle);
+                    vehicleFile.WriteLine(JsonSerializer.Serialize(cargoVehicle));
+
                 }
                 vehicleFile.Close();
             }
-        }
-
-        public void GeneratingRentals()
-        {
-            Console.WriteLine("Generating Rentals\n");
-            Console.Write("\tpassenger vehicles rentals: ");
-            PassengerVehicleRentalNumber = Convert.ToInt32(Console.ReadLine());
-
-            Console.Write("\tcargo vehicles rentals: ");
-            CargoVehicleRentalNumber = Convert.ToInt32(Console.ReadLine());
         }
 
         public string GeneratingRegistrationNumber()
@@ -97,5 +88,36 @@ namespace Homework2.service
 
             return obj;
         }
+
+        public void GeneratingRentals()
+        {
+            Console.WriteLine("Generating Rentals\n");
+            Console.Write("\tpassenger vehicles rentals: ");
+            PassengerVehicleRentalNumber = Convert.ToInt32(Console.ReadLine());
+
+            Console.Write("\tcargo vehicles rentals: ");
+            CargoVehicleRentalNumber = Convert.ToInt32(Console.ReadLine());
+
+            var file = new FileInfo(RentalFilePath);
+            bool ifRentalFileExist = file.Exists;
+            using (StreamWriter rentalFile = new StreamWriter(RentalFilePath, ifRentalFileExist))
+            {
+                for (int i = 0; i < PassengerVehicleRentalNumber; i++)
+                {
+                    
+                }
+
+                for (int i = 0; i < CargoVehicleRentalNumber; i++)
+                {
+                    
+                }
+                rentalFile.Close();
+            }
+        }
+
+        /*public Rent GenerateRentalData()
+        {
+
+        }*/
     }
 }

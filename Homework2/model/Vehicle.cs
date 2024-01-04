@@ -19,10 +19,12 @@ namespace Homework2.model
         public int TravelDistance { get; set; }
         public int DurationOfTheTrips { get; set; }
         public double ModelSpecificCoefficient { get; set; }
+        public static List<Vehicle> vehicleList { get; set; } = new List<Vehicle>();
 
         public Vehicle()
         {
             Id = lastId++;
+            vehicleList.Add(this);
         }
 
     }

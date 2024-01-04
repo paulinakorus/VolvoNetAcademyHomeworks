@@ -1,4 +1,5 @@
-﻿using Homework2.service;
+﻿using Homework2.model;
+using Homework2.service;
 using System.Text;
 
 namespace Homework2
@@ -13,6 +14,7 @@ namespace Homework2
             GeneratingData generator = new GeneratingData(vehiclePath, rentalPath);
 
             generator.GeneratingVehicles();
+            List<Vehicle> vehicles = Vehicle.vehicleList;
         }
     }
 }
