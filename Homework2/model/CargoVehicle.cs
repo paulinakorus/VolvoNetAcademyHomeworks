@@ -15,10 +15,5 @@ namespace Homework2.model
             MaxWeight = max_weight;
             cargoVehicleList.Add(this);
         }
-
-        public static List<CargoVehicle> GetCargoVehicleList()
-        {
-            return cargoVehicleList;
-        }
     }
 }

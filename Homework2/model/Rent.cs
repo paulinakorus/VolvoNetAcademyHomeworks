@@ -8,8 +8,8 @@ namespace Homework2.model
 {
     public class Rent
     {
-        int VehicleId { get; set; }
-        int DurationOfTheTrip { get; set; }
-        int TravelDistance { get; set; }
+        public int VehicleId { get; set; }
+        public int DurationOfTheTrip { get; set; }
+        public int TravelDistance { get; set; }
     }
 }

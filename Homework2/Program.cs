@@ -14,7 +14,7 @@ namespace Homework2
             GeneratingData generator = new GeneratingData(vehiclePath, rentalPath);
 
             generator.GeneratingVehicles();
-            List<Vehicle> vehicles = Vehicle.vehicleList;
+            generator.GeneratingRentals();
         }
     }
 }

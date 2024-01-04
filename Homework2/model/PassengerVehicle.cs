@@ -16,10 +16,5 @@ namespace Homework2.model
             AverageLesseeRating = 0.0f;
             passengerVehicleList.Add(this);
         }
-
-        public static List<PassengerVehicle> GetPassengerVehicleList()
-        {
-            return passengerVehicleList;
-        }
     }
 }

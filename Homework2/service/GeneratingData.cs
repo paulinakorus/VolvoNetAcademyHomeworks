@@ -91,7 +91,7 @@ namespace Homework2.service
 
         public void GeneratingRentals()
         {
-            Console.WriteLine("Generating Rentals\n");
+            Console.WriteLine("\nGenerating Rentals");
             Console.Write("\tpassenger vehicles rentals: ");
             PassengerVehicleRentalNumber = Convert.ToInt32(Console.ReadLine());
 
@@ -102,22 +102,42 @@ namespace Homework2.service
             bool ifRentalFileExist = file.Exists;
             using (StreamWriter rentalFile = new StreamWriter(RentalFilePath, ifRentalFileExist))
             {
+                List<PassengerVehicle> passengerVehiclesList = PassengerVehicle.passengerVehicleList;
+                List<CargoVehicle> cargoVehiclesList = CargoVehicle.cargoVehicleList;
+                List<Vehicle> vehiclesList = Vehicle.vehicleList;
+                
                 for (int i = 0; i < PassengerVehicleRentalNumber; i++)
                 {
-                    
+                    RentPassengerVehicle rentPassengerVehicle = new RentPassengerVehicle();
+
+                    int randomIndex = random.Next(0, passengerVehiclesList.Count - 1);
+                    rentPassengerVehicle.VehicleId = passengerVehiclesList[randomIndex].Id;
+                    rentPassengerVehicle.DurationOfTheTrip = random.Next(1, 24);
+                    rentPassengerVehicle.TravelDistance = random.Next(1, 20) * 100;
+                    rentPassengerVehicle.LesseeRating = random.Next(1, 50) / 10.0f;
+
+                    rentalFile.WriteLine(JsonSerializer.Serialize(rentPassengerVehicle));
                 }
 
                 for (int i = 0; i < CargoVehicleRentalNumber; i++)
                 {
-                    
+                    RentCargoVehicle rentCargoVehicle = new RentCargoVehicle();
+                    rentCargoVehicle.Weight = random.Next(1, 10) * 1000;
+
+                    int randomIndex = random.Next(0, cargoVehiclesList.Count - 1);
+                    while (cargoVehiclesList[randomIndex].MaxWeight < rentCargoVehicle.Weight)
+                    {
+                        randomIndex = random.Next(0, cargoVehiclesList.Count - 1);
+                    }
+
+                    rentCargoVehicle.VehicleId = cargoVehiclesList[randomIndex].Id;
+                    rentCargoVehicle.DurationOfTheTrip = random.Next(1, 24);
+                    rentCargoVehicle.TravelDistance = random.Next(1, 20) * 100;
+
+                    rentalFile.WriteLine(JsonSerializer.Serialize(rentCargoVehicle));
                 }
                 rentalFile.Close();
             }
         }
-
-        /*public Rent GenerateRentalData()
-        {
-
-        }*/
     }
 }
