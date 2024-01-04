@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\pauko\\Desktop\\Homework\\Homework1\\Homework1.csproj": {}
+    "C:\\Users\\pauko\\Desktop\\Studia\\Kursy\\Volvo NET Academy\\Homework\\Homework1\\Homework1.csproj": {}
   },
   "projects": {
-    "C:\\Users\\pauko\\Desktop\\Homework\\Homework1\\Homework1.csproj": {
+    "C:\\Users\\pauko\\Desktop\\Studia\\Kursy\\Volvo NET Academy\\Homework\\Homework1\\Homework1.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\pauko\\Desktop\\Homework\\Homework1\\Homework1.csproj",
+        "projectUniqueName": "C:\\Users\\pauko\\Desktop\\Studia\\Kursy\\Volvo NET Academy\\Homework\\Homework1\\Homework1.csproj",
         "projectName": "Homework1",
-        "projectPath": "C:\\Users\\pauko\\Desktop\\Homework\\Homework1\\Homework1.csproj",
+        "projectPath": "C:\\Users\\pauko\\Desktop\\Studia\\Kursy\\Volvo NET Academy\\Homework\\Homework1\\Homework1.csproj",
         "packagesPath": "C:\\Users\\pauko\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\pauko\\Desktop\\Homework\\Homework1\\obj\\",
+        "outputPath": "C:\\Users\\pauko\\Desktop\\Studia\\Kursy\\Volvo NET Academy\\Homework\\Homework1\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\pauko\\AppData\\Roaming\\NuGet\\NuGet.Config",

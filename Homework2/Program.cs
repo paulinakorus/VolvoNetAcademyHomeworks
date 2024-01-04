@@ -1,4 +1,4 @@
-﻿namespace Homework
+﻿namespace Homework2
 {
     internal class Program
     {
