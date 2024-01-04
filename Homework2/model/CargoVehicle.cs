@@ -8,6 +8,10 @@ namespace Homework2.model
 {
     public class CargoVehicle : Vehicle
     {
-        public float AverageLesseeRating { get; set; }
+        public int MaxWeight { get; set; }
+        public CargoVehicle(int max_weight)
+        {
+            MaxWeight = max_weight;
+        }
     }
 }

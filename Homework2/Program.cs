@@ -1,10 +1,18 @@
-﻿namespace Homework2
+﻿using Homework2.service;
+using System.Text;
+
+namespace Homework2
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
+            string beginningPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            string vehiclePath = Path.Combine(beginningPath, "VehicleFile.txt");
+            string rentalPath = Path.Combine(beginningPath, "RentalFile.txt");
+            GeneratingData generator = new GeneratingData(vehiclePath, rentalPath);
+
+            generator.GeneratingVehicles();
         }
     }
 }

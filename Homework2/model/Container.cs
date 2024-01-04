@@ -9,6 +9,7 @@ namespace Homework2.model
     public class Container
     {
         public Dictionary<int, Vehicle> VehicleDictonary { get; set; }
+        public List<Rent> RentalDictonary { get; set; }
 
         public Container() 
         { 
@@ -26,6 +27,16 @@ namespace Homework2.model
         }
 
         public void RentVehicle()
+        {
+
+        }
+
+        public void ReadVehicleFile()
+        {
+
+        }
+
+        public void ReadRentalFile()
         {
 
         }
