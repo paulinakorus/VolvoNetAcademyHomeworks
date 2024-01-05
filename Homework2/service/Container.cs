@@ -29,6 +29,36 @@ namespace Homework2.service
             CargoRentalList = new List<RentCargoVehicle>();
         }
 
+        public List<Vehicle> VehicleListOfBrand()
+        {
+            ReadVehicleFiles();
+
+            Console.WriteLine("List of vehicles from the brand");
+            Console.Write("\tbrand: ");
+            string insertedBrand = Console.ReadLine();
+
+            var brandPassengerList = PassengerList
+                .OrderBy(x => x.Brand)
+                .Where(x => x.Brand == insertedBrand)
+                .ToList();
+
+            var brandCargoList = CargoList
+                .OrderBy(x => x.Brand)
+                .Where(x => x.Brand == insertedBrand)
+                .ToList();
+
+            List<Vehicle> resultList = new List<Vehicle>();
+            foreach (var vehicle in brandPassengerList) 
+            { 
+                resultList.Add(vehicle); 
+            }
+            foreach (var vehicle in brandCargoList)
+            {
+                resultList.Add(vehicle);
+            }
+            return resultList;
+        }
+
         public void TypeVehicleAndAddToFile()
         {
             Console.WriteLine("Typing vehicle");

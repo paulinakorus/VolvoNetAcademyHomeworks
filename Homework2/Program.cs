@@ -1,4 +1,5 @@
-﻿using Homework2.service;
+﻿using Homework2.model;
+using Homework2.service;
 using System.Text;
 
 namespace Homework2
@@ -16,12 +17,13 @@ namespace Homework2
             Container container = new Container();
             GeneratingData generator = new GeneratingData(passengerVehiclePath, cargoVehiclePath, passengerRentalPath, cargoRentalPath, container);
 
-            generator.GeneratingVehicles();
-            generator.GeneratingRentals();
+            //generator.GeneratingVehicles();
+            //generator.GeneratingRentals();
 
-            container.RentVehicle();
+            //container.RentVehicle();
 
-            generator.GeneratingRentals();
+            //generator.GeneratingRentals();
+            List<Vehicle> vehicles = container.VehicleListOfBrand();
 
         }
     }
