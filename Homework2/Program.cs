@@ -9,12 +9,17 @@ namespace Homework2
         static void Main(string[] args)
         {
             string beginningPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            string vehiclePath = Path.Combine(beginningPath, "VehicleFile.txt");
-            string rentalPath = Path.Combine(beginningPath, "RentalFile.txt");
-            GeneratingData generator = new GeneratingData(vehiclePath, rentalPath);
+            string passengerVehiclePath = Path.Combine(beginningPath, "PassengerVehicleFile.txt");
+            string cargoVehiclePath = Path.Combine(beginningPath, "CargoVehicleFile.txt");
+            string passengerRentalPath = Path.Combine(beginningPath, "PassengerRentalFile.txt");
+            string cargoRentalPath = Path.Combine(beginningPath, "CargoRentalFile.txt");
+            GeneratingData generator = new GeneratingData(passengerVehiclePath, cargoVehiclePath, passengerRentalPath, cargoRentalPath);
 
             generator.GeneratingVehicles();
             generator.GeneratingRentals();
+
+            Container container = new Container();
+            container.ReadVehicleFile();
         }
     }
 }

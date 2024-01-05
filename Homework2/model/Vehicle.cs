@@ -26,6 +26,5 @@ namespace Homework2.model
             Id = lastId++;
             vehicleList.Add(this);
         }
-
     }
 }

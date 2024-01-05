@@ -1,6 +1,7 @@
 ﻿using Homework2.model;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.ConstrainedExecution;
 using System.Text;
@@ -15,14 +16,18 @@ namespace Homework2.service
         public int CargoVehicleNumber { get; set; }
         public int PassengerVehicleRentalNumber { get; set; }
         public int CargoVehicleRentalNumber { get; set; }
-        public string VehicleFilePath { get; set; }
-        public string RentalFilePath { get; set; }
+        public string PassengerVehicleFilePath { get; set; }
+        public string CargoVehicleFilePath { get; set; }
+        public string PassengerRentalFilePath { get; set; }
+        public string CargoRentalFilePath { get; set; }
         private Random random;
 
-        public GeneratingData(string vehicleFilePath, string rentalFilePath)
+        public GeneratingData(string passengerVehicleFilePath, string cargoVehicleFilePath, string passengerRentalFilePath, string cargoRentalFilePath)
         {
-            VehicleFilePath = vehicleFilePath;
-            RentalFilePath = rentalFilePath;
+            PassengerVehicleFilePath = passengerVehicleFilePath;
+            CargoVehicleFilePath = cargoVehicleFilePath;
+            PassengerRentalFilePath = passengerRentalFilePath;
+            CargoRentalFilePath = cargoRentalFilePath;
             random = new Random();
         }
 
@@ -35,25 +40,35 @@ namespace Homework2.service
             Console.Write("\tcargo vehicles: ");
             CargoVehicleNumber = Convert.ToInt32(Console.ReadLine());
 
-            var file = new FileInfo(VehicleFilePath);
-            bool ifVehicleFileExist = file.Exists;
-            using (StreamWriter vehicleFile = new StreamWriter(VehicleFilePath, ifVehicleFileExist))
+            var passengerFile = new FileInfo(PassengerVehicleFilePath);
+            var cargoFile = new FileInfo(CargoVehicleFilePath);
+            bool ifPassengerFileExist = passengerFile.Exists;
+            bool ifCargoFileExist = cargoFile.Exists;
+            using (StreamWriter passengerInput = new StreamWriter(PassengerVehicleFilePath, ifPassengerFileExist))
             {
+                List<PassengerVehicle> passengerVehicleList = new List<PassengerVehicle>();
                 for (int i = 0; i < PassengerVehicleNumber; i++)
                 {
                     PassengerVehicle passengerVehicle = new PassengerVehicle();
                     passengerVehicle = (PassengerVehicle)GenerateVehicleData(passengerVehicle);
-                    vehicleFile.WriteLine(JsonSerializer.Serialize(passengerVehicle));
+                    passengerVehicleList.Add(passengerVehicle);
                 }
+                passengerInput.Write(JsonSerializer.Serialize(passengerVehicleList));
+                passengerInput.Close();
+            }
 
+            using (StreamWriter cargoInput = new StreamWriter(CargoVehicleFilePath, ifCargoFileExist))
+            {
+                List<CargoVehicle> cargoVehicleList = new List<CargoVehicle>();
+                cargoInput.Write("[");
                 for (int i = 0; i < CargoVehicleNumber; i++)
                 {
-                    CargoVehicle cargoVehicle = new CargoVehicle(random.Next(1,10)*1000);
+                    CargoVehicle cargoVehicle = new CargoVehicle(random.Next(1, 10) * 1000);
                     cargoVehicle = (CargoVehicle)GenerateVehicleData(cargoVehicle);
-                    vehicleFile.WriteLine(JsonSerializer.Serialize(cargoVehicle));
-
+                    cargoVehicleList.Add(cargoVehicle);
                 }
-                vehicleFile.Close();
+                cargoInput.Write(JsonSerializer.Serialize(cargoVehicleList));
+                cargoInput.Close();
             }
         }
 
@@ -98,14 +113,15 @@ namespace Homework2.service
             Console.Write("\tcargo vehicles rentals: ");
             CargoVehicleRentalNumber = Convert.ToInt32(Console.ReadLine());
 
-            var file = new FileInfo(RentalFilePath);
-            bool ifRentalFileExist = file.Exists;
-            using (StreamWriter rentalFile = new StreamWriter(RentalFilePath, ifRentalFileExist))
+            var passengerFile = new FileInfo(PassengerRentalFilePath);
+            var cargoFile = new FileInfo(CargoRentalFilePath);
+            bool ifPassengerFileExist = passengerFile.Exists;
+            bool ifCargoFileExist = cargoFile.Exists;
+            using (StreamWriter passengerInput = new StreamWriter(PassengerRentalFilePath, ifPassengerFileExist))
             {
                 List<PassengerVehicle> passengerVehiclesList = PassengerVehicle.passengerVehicleList;
-                List<CargoVehicle> cargoVehiclesList = CargoVehicle.cargoVehicleList;
-                List<Vehicle> vehiclesList = Vehicle.vehicleList;
-                
+                List<RentPassengerVehicle> rentPassengerVehicleList = new List<RentPassengerVehicle>();
+
                 for (int i = 0; i < PassengerVehicleRentalNumber; i++)
                 {
                     RentPassengerVehicle rentPassengerVehicle = new RentPassengerVehicle();
@@ -116,8 +132,16 @@ namespace Homework2.service
                     rentPassengerVehicle.TravelDistance = random.Next(1, 20) * 100;
                     rentPassengerVehicle.LesseeRating = random.Next(1, 50) / 10.0f;
 
-                    rentalFile.WriteLine(JsonSerializer.Serialize(rentPassengerVehicle));
+                    rentPassengerVehicleList.Add(rentPassengerVehicle);
                 }
+                passengerInput.Write(JsonSerializer.Serialize(rentPassengerVehicleList));
+                passengerInput.Close();
+            }
+
+            using (StreamWriter cargoInput = new StreamWriter(CargoRentalFilePath, ifCargoFileExist))
+            {
+                List<CargoVehicle> cargoVehiclesList = CargoVehicle.cargoVehicleList;
+                List<RentCargoVehicle> rentCargoVehicleList = new List<RentCargoVehicle>();
 
                 for (int i = 0; i < CargoVehicleRentalNumber; i++)
                 {
@@ -134,9 +158,10 @@ namespace Homework2.service
                     rentCargoVehicle.DurationOfTheTrip = random.Next(1, 24);
                     rentCargoVehicle.TravelDistance = random.Next(1, 20) * 100;
 
-                    rentalFile.WriteLine(JsonSerializer.Serialize(rentCargoVehicle));
+                    rentCargoVehicleList.Add(rentCargoVehicle);
                 }
-                rentalFile.Close();
+                cargoInput.Write(JsonSerializer.Serialize(rentCargoVehicleList));
+                cargoInput.Close();
             }
         }
     }
