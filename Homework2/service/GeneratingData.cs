@@ -20,55 +20,52 @@ namespace Homework2.service
         public string CargoVehicleFilePath { get; set; }
         public string PassengerRentalFilePath { get; set; }
         public string CargoRentalFilePath { get; set; }
+        public Container VehicleContainer { get; set; }
         private Random random;
 
-        public GeneratingData(string passengerVehicleFilePath, string cargoVehicleFilePath, string passengerRentalFilePath, string cargoRentalFilePath)
+        public GeneratingData(string passengerVehicleFilePath, string cargoVehicleFilePath, string passengerRentalFilePath, string cargoRentalFilePath, Container container)
         {
             PassengerVehicleFilePath = passengerVehicleFilePath;
             CargoVehicleFilePath = cargoVehicleFilePath;
             PassengerRentalFilePath = passengerRentalFilePath;
             CargoRentalFilePath = cargoRentalFilePath;
+            VehicleContainer = container;
             random = new Random();
         }
 
         public void GeneratingVehicles()
         {
+            var passengerFile = new FileInfo(PassengerVehicleFilePath);
+            var cargoFile = new FileInfo(CargoVehicleFilePath);
+            bool ifPassengerFileExist = passengerFile.Exists;
+            bool ifCargoFileExist = cargoFile.Exists;
+
+            if (ifPassengerFileExist && ifCargoFileExist)
+            {
+                VehicleContainer.ReadVehicleFiles();
+            }
+                
             Console.WriteLine("Generating Vehicles");
             Console.Write("\tpassenger vehicles: ");
             PassengerVehicleNumber = Convert.ToInt32(Console.ReadLine());
 
             Console.Write("\tcargo vehicles: ");
             CargoVehicleNumber = Convert.ToInt32(Console.ReadLine());
-
-            var passengerFile = new FileInfo(PassengerVehicleFilePath);
-            var cargoFile = new FileInfo(CargoVehicleFilePath);
-            bool ifPassengerFileExist = passengerFile.Exists;
-            bool ifCargoFileExist = cargoFile.Exists;
-            using (StreamWriter passengerInput = new StreamWriter(PassengerVehicleFilePath, ifPassengerFileExist))
+            
+            for (int i = 0; i < PassengerVehicleNumber; i++)
             {
-                List<PassengerVehicle> passengerVehicleList = new List<PassengerVehicle>();
-                for (int i = 0; i < PassengerVehicleNumber; i++)
-                {
-                    PassengerVehicle passengerVehicle = new PassengerVehicle();
-                    passengerVehicle = (PassengerVehicle)GenerateVehicleData(passengerVehicle);
-                    passengerVehicleList.Add(passengerVehicle);
-                }
-                passengerInput.Write(JsonSerializer.Serialize(passengerVehicleList));
-                passengerInput.Close();
+                PassengerVehicle passengerVehicle = new PassengerVehicle();
+                passengerVehicle = (PassengerVehicle)GenerateVehicleData(passengerVehicle);
+                VehicleContainer.PassengerList.Add(passengerVehicle);
             }
-
-            using (StreamWriter cargoInput = new StreamWriter(CargoVehicleFilePath, ifCargoFileExist))
+            
+            for (int i = 0; i < CargoVehicleNumber; i++)
             {
-                List<CargoVehicle> cargoVehicleList = new List<CargoVehicle>();
-                for (int i = 0; i < CargoVehicleNumber; i++)
-                {
-                    CargoVehicle cargoVehicle = new CargoVehicle(/*random.Next(1, 10) * 1000*/);
-                    cargoVehicle = (CargoVehicle)GenerateVehicleData(cargoVehicle);
-                    cargoVehicleList.Add(cargoVehicle);
-                }
-                cargoInput.Write(JsonSerializer.Serialize(cargoVehicleList));
-                cargoInput.Close();
+                CargoVehicle cargoVehicle = new CargoVehicle();
+                cargoVehicle = (CargoVehicle)GenerateVehicleData(cargoVehicle);
+                VehicleContainer.CargoList.Add(cargoVehicle);
             }
+            VehicleContainer.WriteVehiclesToFiles();
         }
 
         public string GeneratingRegistrationNumber()
@@ -103,7 +100,7 @@ namespace Homework2.service
             return obj;
         }
 
-        public void GeneratingRentals()
+        public void GeneratingRentals()                                                         // synchronize to rent
         {
             Console.WriteLine("\nGenerating Rentals");
             Console.Write("\tpassenger vehicles rentals: ");
@@ -116,52 +113,47 @@ namespace Homework2.service
             var cargoFile = new FileInfo(CargoRentalFilePath);
             bool ifPassengerFileExist = passengerFile.Exists;
             bool ifCargoFileExist = cargoFile.Exists;
-            using (StreamWriter passengerInput = new StreamWriter(PassengerRentalFilePath, ifPassengerFileExist))
+
+            if (ifPassengerFileExist && ifCargoFileExist)
             {
-                List<PassengerVehicle> passengerVehiclesList = PassengerVehicle.passengerVehicleList;
-                List<RentPassengerVehicle> rentPassengerVehicleList = new List<RentPassengerVehicle>();
-
-                for (int i = 0; i < PassengerVehicleRentalNumber; i++)
-                {
-                    RentPassengerVehicle rentPassengerVehicle = new RentPassengerVehicle();
-
-                    int randomIndex = random.Next(0, passengerVehiclesList.Count - 1);
-                    rentPassengerVehicle.VehicleId = passengerVehiclesList[randomIndex].Id;
-                    rentPassengerVehicle.DurationOfTheTrip = random.Next(1, 24);
-                    rentPassengerVehicle.TravelDistance = random.Next(1, 20) * 100;
-                    rentPassengerVehicle.LesseeRating = random.Next(1, 50) / 10.0d;
-
-                    rentPassengerVehicleList.Add(rentPassengerVehicle);
-                }
-                passengerInput.Write(JsonSerializer.Serialize(rentPassengerVehicleList));
-                passengerInput.Close();
+                VehicleContainer.ReadRentalFiles();
             }
 
-            using (StreamWriter cargoInput = new StreamWriter(CargoRentalFilePath, ifCargoFileExist))
+            for (int i = 0; i < PassengerVehicleRentalNumber; i++)
             {
-                List<CargoVehicle> cargoVehiclesList = CargoVehicle.cargoVehicleList;
-                List<RentCargoVehicle> rentCargoVehicleList = new List<RentCargoVehicle>();
+                RentPassengerVehicle rentPassengerVehicle = new RentPassengerVehicle();
 
-                for (int i = 0; i < CargoVehicleRentalNumber; i++)
-                {
-                    RentCargoVehicle rentCargoVehicle = new RentCargoVehicle();
-                    rentCargoVehicle.Weight = random.Next(1, 10) * 1000;
+                int randomIndex = random.Next(0, VehicleContainer.PassengerList.Count - 1);
+                PassengerVehicle vehicle = VehicleContainer.PassengerList[randomIndex];
 
-                    int randomIndex = random.Next(0, cargoVehiclesList.Count - 1);
-                    /*while (cargoVehiclesList[randomIndex].MaxWeight < rentCargoVehicle.Weight)
-                    {
-                        randomIndex = random.Next(0, cargoVehiclesList.Count - 1);
-                    }*/
+                rentPassengerVehicle.VehicleId = VehicleContainer.PassengerList[randomIndex].Id;
+                rentPassengerVehicle.DurationOfTheTrip = random.Next(1, 24);
+                rentPassengerVehicle.TravelDistance = random.Next(1, 20) * 100;
+                rentPassengerVehicle.LesseeRating = random.Next(1, 50) / 10.0d;
 
-                    rentCargoVehicle.VehicleId = cargoVehiclesList[randomIndex].Id;
-                    rentCargoVehicle.DurationOfTheTrip = random.Next(1, 24);
-                    rentCargoVehicle.TravelDistance = random.Next(1, 20) * 100;
-
-                    rentCargoVehicleList.Add(rentCargoVehicle);
-                }
-                cargoInput.Write(JsonSerializer.Serialize(rentCargoVehicleList));
-                cargoInput.Close();
+                vehicle.synchronizeToRent(rentPassengerVehicle);
+                VehicleContainer.WriteVehiclesToFiles();
+                VehicleContainer.PassengerRentalList.Add(rentPassengerVehicle);
             }
+            
+
+            for (int i = 0; i < CargoVehicleRentalNumber; i++)
+            {
+                RentCargoVehicle rentCargoVehicle = new RentCargoVehicle();
+                rentCargoVehicle.Weight = random.Next(1, 10) * 1000;
+
+                int randomIndex = random.Next(0, VehicleContainer.CargoList.Count - 1);
+                CargoVehicle vehicle = VehicleContainer.CargoList[randomIndex];
+
+                rentCargoVehicle.VehicleId = VehicleContainer.CargoList[randomIndex].Id;
+                rentCargoVehicle.DurationOfTheTrip = random.Next(1, 24);
+                rentCargoVehicle.TravelDistance = random.Next(1, 20) * 100;
+
+                vehicle.synchronizeToRent(rentCargoVehicle);
+                VehicleContainer.WriteVehiclesToFiles();
+                VehicleContainer.CargoRentalList.Add(rentCargoVehicle);
+            }
+            VehicleContainer.WriteRentalsToFiles();
         }
     }
 }

@@ -12,13 +12,17 @@ namespace Homework2
             string cargoVehiclePath = Path.Combine(beginningPath, "CargoVehicleFile.txt");
             string passengerRentalPath = Path.Combine(beginningPath, "PassengerRentalFile.txt");
             string cargoRentalPath = Path.Combine(beginningPath, "CargoRentalFile.txt");
-            GeneratingData generator = new GeneratingData(passengerVehiclePath, cargoVehiclePath, passengerRentalPath, cargoRentalPath);
+            
+            Container container = new Container();
+            GeneratingData generator = new GeneratingData(passengerVehiclePath, cargoVehiclePath, passengerRentalPath, cargoRentalPath, container);
 
             generator.GeneratingVehicles();
             generator.GeneratingRentals();
 
-            Container container = new Container();
             container.RentVehicle();
+
+            generator.GeneratingRentals();
+
         }
     }
 }
