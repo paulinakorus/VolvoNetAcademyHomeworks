@@ -129,7 +129,7 @@ namespace Homework2.service
                     rentPassengerVehicle.VehicleId = passengerVehiclesList[randomIndex].Id;
                     rentPassengerVehicle.DurationOfTheTrip = random.Next(1, 24);
                     rentPassengerVehicle.TravelDistance = random.Next(1, 20) * 100;
-                    rentPassengerVehicle.LesseeRating = random.Next(1, 50) / 10.0f;
+                    rentPassengerVehicle.LesseeRating = random.Next(1, 50) / 10.0d;
 
                     rentPassengerVehicleList.Add(rentPassengerVehicle);
                 }

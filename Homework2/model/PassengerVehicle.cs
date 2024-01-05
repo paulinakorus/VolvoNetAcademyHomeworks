@@ -8,13 +8,21 @@ namespace Homework2.model
 {
     public class PassengerVehicle : Vehicle
     {
-        public float AverageLesseeRating { get; set; }
+        public double AverageLesseeRating { get; set; }
         public static List<PassengerVehicle> passengerVehicleList { get; set; } = new List<PassengerVehicle>();
-
+        private double sumOfLesseeRatings;
+        private int numberOfLesseeRatings;
         public PassengerVehicle() 
         {
-            AverageLesseeRating = 0.0f;
+            AverageLesseeRating = 0.0d;
             passengerVehicleList.Add(this);
+            sumOfLesseeRatings = 0.0d;
+            numberOfLesseeRatings = 0;
+        }
+
+        public void synchronizeAverageLesseeRating(double rating)
+        {
+            AverageLesseeRating = (sumOfLesseeRatings+rating)/(++numberOfLesseeRatings);
         }
     }
 }

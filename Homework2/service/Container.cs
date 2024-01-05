@@ -117,12 +117,67 @@ namespace Homework2.service
                     return;
                 }
             }
-            Console.WriteLine($"Vehicle with id: {ID} do not exist, try again");
+            Console.WriteLine($"Vehicle with id: {ID} do not exist");
         }
 
         public void RentVehicle()
         {
+            Console.WriteLine("Renting vehicle");
+            Console.Write("\tid of vehicle: ");
+            int ID = Convert.ToInt32(Console.ReadLine());
 
+            ReadVehicleFiles();
+            foreach (PassengerVehicle vehicle in PassengerList)
+            {
+                if (vehicle.Id == ID)
+                {
+                    RentPassengerVehicle rentPassenger = new RentPassengerVehicle();
+                    Console.WriteLine("Passenger vehicle");
+                    TypeRent(rentPassenger, ID);
+
+                    Console.Write("\tlessee rating: ");
+                    rentPassenger.LesseeRating = Convert.ToDouble(Console.ReadLine());
+                    vehicle.synchronizeAverageLesseeRating(rentPassenger.LesseeRating);
+                    vehicle.synchronizeToRent(rentPassenger);
+
+                    PassengerRentalList.Add(rentPassenger);
+                    WriteRentalsToFiles();
+                    WriteVehiclesToFiles();
+
+                    return;
+                }
+            }
+
+            foreach (CargoVehicle vehicle in CargoList)
+            {
+                if (vehicle.Id == ID)
+                {
+                    RentCargoVehicle rentCargo = new RentCargoVehicle();
+                    Console.WriteLine("Cargo vehicle");
+                    TypeRent(rentCargo, ID);
+
+                    Console.Write("\tweight: ");
+                    rentCargo.Weight = Convert.ToInt32(Console.ReadLine());
+
+                    vehicle.synchronizeToRent(rentCargo);
+
+                    CargoRentalList.Add(rentCargo);
+                    WriteRentalsToFiles();
+                    WriteVehiclesToFiles();
+
+                    return;
+                }
+            }
+            Console.WriteLine($"Vehicle with id: {ID} do not exist");
+        }
+
+        public void TypeRent(Rent rent, int ID)
+        {
+            rent.VehicleId = ID;
+            Console.Write("\tduration of the trip: ");
+            rent.DurationOfTheTrip = Convert.ToInt32(Console.ReadLine());
+            Console.Write("\ttravel distance: ");
+            rent.TravelDistance = Convert.ToInt32(Console.ReadLine());
         }
 
         public void WriteVehiclesToFiles()

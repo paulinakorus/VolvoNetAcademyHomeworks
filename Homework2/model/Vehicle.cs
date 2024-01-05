@@ -25,6 +25,14 @@ namespace Homework2.model
         {
             Id = lastId++;
             vehicleList.Add(this);
+            TravelDistance = 0;
+            DurationOfTheTrips = 0;
+        }
+
+        public void synchronizeToRent(Rent rent)
+        {
+            TravelDistance += rent.TravelDistance;
+            DurationOfTheTrips += rent.DurationOfTheTrip;
         }
     }
 }

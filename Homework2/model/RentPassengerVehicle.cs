@@ -8,6 +8,6 @@ namespace Homework2.model
 {
     public class RentPassengerVehicle : Rent
     {
-        public float LesseeRating { get; set; }
+        public double LesseeRating { get; set; }
     }
 }
