@@ -29,14 +29,80 @@ namespace Homework2.service
             CargoRentalList = new List<RentCargoVehicle>();
         }
 
-        public void AddVehicle(Vehicle vehicle)
+        public void TypeVehicleAndAddToFile()
         {
+            Console.WriteLine("Typing vehicle");
+            Console.WriteLine("\t1 - passenger vehicle ");
+            Console.WriteLine("\t2 - cargo vehicle");
+            
+            string type = null;
+            do
+            {
+                Console.WriteLine("Please insert the number of the type");
+                Console.Write("\ttype: ");
+                type = Console.ReadLine();
+            } while (type != "1" && type != "2");
+            
+            if(type == "1")
+            {
+                Console.WriteLine("\nPassenger vehicle");
+                PassengerVehicle passengerVehicle = new PassengerVehicle();
+                passengerVehicle = (PassengerVehicle)TypeVehicleData(passengerVehicle);
+                AddVehicleToList(passengerVehicle);
+            }else                                                                                   //(type == "2")
+            {
+                Console.WriteLine("\tCargo vehicle");
+                CargoVehicle cargoVehicle = new CargoVehicle();
+                cargoVehicle = (CargoVehicle)TypeVehicleData(cargoVehicle);
+                AddVehicleToList(cargoVehicle);
+            }
+            WriteVehiclesToFiles();
+        }
 
+        public Vehicle TypeVehicleData(Vehicle obj)
+        {
+            Console.Write("\tbrand: ");
+            obj.Brand = Console.ReadLine();
+            Console.Write("\tmodel: ");
+            obj.Model = Console.ReadLine();
+            Console.Write("\tyear of manufacture: ");
+            obj.YearOfManufacture = Convert.ToInt32(Console.ReadLine());
+            Console.Write("\tcolor: ");
+            obj.Color = Console.ReadLine();
+            Console.Write("\tprice: ");
+            obj.Price = Convert.ToInt32(Console.ReadLine());
+            Console.Write("\tregistration number: ");
+            obj.RegistrationNumber = Console.ReadLine();
+            Console.Write("\tmodel specific coefficient: ");
+            obj.ModelSpecificCoefficient = Convert.ToDouble(Console.ReadLine());
+
+            return obj;
+        }
+
+        public void AddVehicleToList(Vehicle vehicle)
+        {
+            if(vehicle.GetType() == typeof(PassengerVehicle))
+            {
+                PassengerList.Add((PassengerVehicle)vehicle);
+            }
+            else if(vehicle.GetType() == typeof(CargoVehicle))
+            {
+                CargoList.Add((CargoVehicle)vehicle);
+            }
         }
 
         public void RemoveVehicle(Vehicle vehicle)
         {
-
+            ReadVehicleFiles();
+            if (vehicle.GetType() == typeof(PassengerVehicle))
+            {
+                PassengerList.Remove((PassengerVehicle)vehicle);
+            }
+            else if (vehicle.GetType() == typeof(CargoVehicle))
+            {
+                CargoList.Remove((CargoVehicle)vehicle);
+            }
+            WriteVehiclesToFiles();
         }
 
         public void RemoveRent(Rent rent)
