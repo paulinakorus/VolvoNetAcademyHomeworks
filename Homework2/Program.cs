@@ -1,5 +1,4 @@
-﻿using Homework2.model;
-using Homework2.service;
+﻿using Homework2.service;
 using System.Text;
 
 namespace Homework2
@@ -15,11 +14,14 @@ namespace Homework2
             string cargoRentalPath = Path.Combine(beginningPath, "CargoRentalFile.txt");
             GeneratingData generator = new GeneratingData(passengerVehiclePath, cargoVehiclePath, passengerRentalPath, cargoRentalPath);
 
-            generator.GeneratingVehicles();
-            generator.GeneratingRentals();
+            //generator.GeneratingVehicles();
+            //generator.GeneratingRentals();
 
             Container container = new Container();
-            container.ReadVehicleFile();
+            container.ReadVehicleFiles();
+            container.ReadRentalFiles();
+            container.WriteVehiclesToFiles();
+            container.WriteRentalsToFiles();
         }
     }
 }

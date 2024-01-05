@@ -60,10 +60,9 @@ namespace Homework2.service
             using (StreamWriter cargoInput = new StreamWriter(CargoVehicleFilePath, ifCargoFileExist))
             {
                 List<CargoVehicle> cargoVehicleList = new List<CargoVehicle>();
-                cargoInput.Write("[");
                 for (int i = 0; i < CargoVehicleNumber; i++)
                 {
-                    CargoVehicle cargoVehicle = new CargoVehicle(random.Next(1, 10) * 1000);
+                    CargoVehicle cargoVehicle = new CargoVehicle(/*random.Next(1, 10) * 1000*/);
                     cargoVehicle = (CargoVehicle)GenerateVehicleData(cargoVehicle);
                     cargoVehicleList.Add(cargoVehicle);
                 }
@@ -149,10 +148,10 @@ namespace Homework2.service
                     rentCargoVehicle.Weight = random.Next(1, 10) * 1000;
 
                     int randomIndex = random.Next(0, cargoVehiclesList.Count - 1);
-                    while (cargoVehiclesList[randomIndex].MaxWeight < rentCargoVehicle.Weight)
+                    /*while (cargoVehiclesList[randomIndex].MaxWeight < rentCargoVehicle.Weight)
                     {
                         randomIndex = random.Next(0, cargoVehiclesList.Count - 1);
-                    }
+                    }*/
 
                     rentCargoVehicle.VehicleId = cargoVehiclesList[randomIndex].Id;
                     rentCargoVehicle.DurationOfTheTrip = random.Next(1, 24);
