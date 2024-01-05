@@ -91,23 +91,33 @@ namespace Homework2.service
             }
         }
 
-        public void RemoveVehicle(Vehicle vehicle)
+        public void RemoveVehicle()
         {
+            Console.WriteLine("Removing vehicle");
+            Console.Write("\tid of vehicle: ");
+            int ID = Convert.ToInt32(Console.ReadLine());
+
             ReadVehicleFiles();
-            if (vehicle.GetType() == typeof(PassengerVehicle))
+            foreach(PassengerVehicle vehicle in PassengerList)
             {
-                PassengerList.Remove((PassengerVehicle)vehicle);
+                if(vehicle.Id == ID)
+                {
+                    PassengerList.Remove(vehicle);
+                    WriteVehiclesToFiles();
+                    return;
+                }
             }
-            else if (vehicle.GetType() == typeof(CargoVehicle))
+
+            foreach (CargoVehicle vehicle in CargoList)
             {
-                CargoList.Remove((CargoVehicle)vehicle);
+                if (vehicle.Id == ID)
+                {
+                    CargoList.Remove(vehicle);
+                    WriteVehiclesToFiles();
+                    return;
+                }
             }
-            WriteVehiclesToFiles();
-        }
-
-        public void RemoveRent(Rent rent)
-        {
-
+            Console.WriteLine($"Vehicle with id: {ID} do not exist, try again");
         }
 
         public void RentVehicle()
