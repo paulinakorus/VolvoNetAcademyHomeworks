@@ -17,13 +17,13 @@ namespace Homework2
             Container container = new Container();
             GeneratingData generator = new GeneratingData(passengerVehiclePath, cargoVehiclePath, passengerRentalPath, cargoRentalPath, container);
 
-            //generator.GeneratingVehicles();
-            //generator.GeneratingRentals();
+            generator.GeneratingVehicles();
+            generator.GeneratingRentals();
 
-            //container.RentVehicle();
+            container.RentVehicle();
 
-            //generator.GeneratingRentals();
-            List<Vehicle> vehicles = container.VehicleListOfBrand();
+            generator.GeneratingRentals();
+            //List<Vehicle> vehicles = container.VehicleListOfBrand();
 
         }
     }

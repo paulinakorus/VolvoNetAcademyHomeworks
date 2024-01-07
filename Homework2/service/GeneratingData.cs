@@ -132,6 +132,7 @@ namespace Homework2.service
                 rentPassengerVehicle.LesseeRating = random.Next(1, 50) / 10.0d;
 
                 vehicle.synchronizeToRent(rentPassengerVehicle);
+                vehicle.synchronizeAverageLesseeRating(rentPassengerVehicle.LesseeRating);
                 VehicleContainer.WriteVehiclesToFiles();
                 VehicleContainer.PassengerRentalList.Add(rentPassengerVehicle);
             }
