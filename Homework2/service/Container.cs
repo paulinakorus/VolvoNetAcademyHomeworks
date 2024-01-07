@@ -59,6 +59,32 @@ namespace Homework2.service
             return resultList;
         }
 
+        public List<Vehicle> PredeterminedVehicles()
+        {
+            ReadVehicleFiles();
+
+            Console.WriteLine("List of predetermined vehicles");
+
+            var predeterminedPassengerList = PassengerList
+                .Where(x => x.TravelDistance > 100000 || (DateTime.Now.Year - x.YearOfManufacture) > 5)
+                .ToList();
+
+            var predeterminedCargorList = CargoList
+               .Where(x => x.TravelDistance > 100000000 || (DateTime.Now.Year - x.YearOfManufacture) > 15)
+               .ToList();
+
+            List<Vehicle> resultList = new List<Vehicle>();
+            foreach (var vehicle in predeterminedPassengerList)
+            {
+                resultList.Add(vehicle);
+            }
+            foreach (var vehicle in predeterminedCargorList)
+            {
+                resultList.Add(vehicle);
+            }
+            return resultList;
+        }
+
         public void TypeVehicleAndAddToFile()
         {
             Console.WriteLine("Typing vehicle");

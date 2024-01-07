@@ -20,10 +20,7 @@ namespace Homework2
             generator.GeneratingVehicles();
             generator.GeneratingRentals();
 
-            container.RentVehicle();
-
-            generator.GeneratingRentals();
-            //List<Vehicle> vehicles = container.VehicleListOfBrand();
+            List<Vehicle> vehicles = container.PredeterminedVehicles();
 
         }
     }
