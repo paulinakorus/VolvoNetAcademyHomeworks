@@ -63,13 +63,19 @@ namespace Homework2.service
         {
             ReadVehicleFiles();
 
-            Console.WriteLine("List of predetermined vehicles");
+            Console.WriteLine("List of predetermined vehicles of the model");
+            Console.Write("\tmodel: ");
+            string insertedModel = Console.ReadLine();
 
             var predeterminedPassengerList = PassengerList
+                .OrderBy(x => x.Model)
+                .Where(x => x.Model == insertedModel)
                 .Where(x => x.TravelDistance > 100000 || (DateTime.Now.Year - x.YearOfManufacture) > 5)
                 .ToList();
 
             var predeterminedCargorList = CargoList
+               .OrderBy(x => x.Model)
+               .Where(x => x.Model == insertedModel)
                .Where(x => x.TravelDistance > 100000000 || (DateTime.Now.Year - x.YearOfManufacture) > 15)
                .ToList();
 
@@ -79,6 +85,32 @@ namespace Homework2.service
                 resultList.Add(vehicle);
             }
             foreach (var vehicle in predeterminedCargorList)
+            {
+                resultList.Add(vehicle);
+            }
+            return resultList;
+        }
+
+        public List<Vehicle> ServiceNeededVehicles()
+        {
+            ReadVehicleFiles();
+
+            Console.WriteLine("List of vehicles which need service soon");
+
+            var neededPassengerList = PassengerList
+                .Where(x => (((x.TravelDistance)%5000) >= (5000 - 1000)))
+                .ToList();
+
+            var neededCargorList = CargoList
+               .Where(x => (((x.TravelDistance) % 15000) >= (15000 - 1000)))
+               .ToList();
+
+            List<Vehicle> resultList = new List<Vehicle>();
+            foreach (var vehicle in neededPassengerList)
+            {
+                resultList.Add(vehicle);
+            }
+            foreach (var vehicle in neededCargorList)
             {
                 resultList.Add(vehicle);
             }

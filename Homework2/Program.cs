@@ -17,10 +17,10 @@ namespace Homework2
             Container container = new Container();
             GeneratingData generator = new GeneratingData(passengerVehiclePath, cargoVehiclePath, passengerRentalPath, cargoRentalPath, container);
 
-            generator.GeneratingVehicles();
-            generator.GeneratingRentals();
+            //generator.GeneratingVehicles();
+            //generator.GeneratingRentals();
 
-            List<Vehicle> vehicles = container.PredeterminedVehicles();
+            List<Vehicle> vehicles = container.ServiceNeededVehicles();
 
         }
     }
