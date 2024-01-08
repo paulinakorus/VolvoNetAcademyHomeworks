@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Transactions;
 using Homework2.model;
 
 namespace Homework2.service
@@ -28,95 +29,6 @@ namespace Homework2.service
             PassengerRentalList = new List<RentPassengerVehicle>();
             CargoRentalList = new List<RentCargoVehicle>();
         }
-
-        public List<Vehicle> VehicleListOfBrand()
-        {
-            ReadVehicleFiles();
-
-            Console.WriteLine("List of vehicles from the brand");
-            Console.Write("\tbrand: ");
-            string insertedBrand = Console.ReadLine();
-
-            var brandPassengerList = PassengerList
-                .OrderBy(x => x.Brand)
-                .Where(x => x.Brand == insertedBrand)
-                .ToList();
-
-            var brandCargoList = CargoList
-                .OrderBy(x => x.Brand)
-                .Where(x => x.Brand == insertedBrand)
-                .ToList();
-
-            List<Vehicle> resultList = new List<Vehicle>();
-            foreach (var vehicle in brandPassengerList) 
-            { 
-                resultList.Add(vehicle); 
-            }
-            foreach (var vehicle in brandCargoList)
-            {
-                resultList.Add(vehicle);
-            }
-            return resultList;
-        }
-
-        public List<Vehicle> PredeterminedVehicles()
-        {
-            ReadVehicleFiles();
-
-            Console.WriteLine("List of predetermined vehicles of the model");
-            Console.Write("\tmodel: ");
-            string insertedModel = Console.ReadLine();
-
-            var predeterminedPassengerList = PassengerList
-                .OrderBy(x => x.Model)
-                .Where(x => x.Model == insertedModel)
-                .Where(x => x.TravelDistance > 100000 || (DateTime.Now.Year - x.YearOfManufacture) > 5)
-                .ToList();
-
-            var predeterminedCargorList = CargoList
-               .OrderBy(x => x.Model)
-               .Where(x => x.Model == insertedModel)
-               .Where(x => x.TravelDistance > 100000000 || (DateTime.Now.Year - x.YearOfManufacture) > 15)
-               .ToList();
-
-            List<Vehicle> resultList = new List<Vehicle>();
-            foreach (var vehicle in predeterminedPassengerList)
-            {
-                resultList.Add(vehicle);
-            }
-            foreach (var vehicle in predeterminedCargorList)
-            {
-                resultList.Add(vehicle);
-            }
-            return resultList;
-        }
-
-        public List<Vehicle> ServiceNeededVehicles()
-        {
-            ReadVehicleFiles();
-
-            Console.WriteLine("List of vehicles which need service soon");
-
-            var neededPassengerList = PassengerList
-                .Where(x => (((x.TravelDistance)%5000) >= (5000 - 1000)))
-                .ToList();
-
-            var neededCargorList = CargoList
-               .Where(x => (((x.TravelDistance) % 15000) >= (15000 - 1000)))
-               .ToList();
-
-            List<Vehicle> resultList = new List<Vehicle>();
-            foreach (var vehicle in neededPassengerList)
-            {
-                resultList.Add(vehicle);
-            }
-            foreach (var vehicle in neededCargorList)
-            {
-                resultList.Add(vehicle);
-            }
-            return resultList;
-        }
-
         public void TypeVehicleAndAddToFile()
         {
             Console.WriteLine("Typing vehicle");
@@ -147,7 +59,7 @@ namespace Homework2.service
             WriteVehiclesToFiles();
         }
 
-        public Vehicle TypeVehicleData(Vehicle obj)
+        private Vehicle TypeVehicleData(Vehicle obj)
         {
             Console.Write("\tbrand: ");
             obj.Brand = Console.ReadLine();
@@ -167,7 +79,7 @@ namespace Homework2.service
             return obj;
         }
 
-        public void AddVehicleToList(Vehicle vehicle)
+        private void AddVehicleToList(Vehicle vehicle)
         {
             if(vehicle.GetType() == typeof(PassengerVehicle))
             {
@@ -259,7 +171,7 @@ namespace Homework2.service
             Console.WriteLine($"Vehicle with id: {ID} do not exist");
         }
 
-        public void TypeRent(Rent rent, int ID)
+        private void TypeRent(Rent rent, int ID)
         {
             rent.VehicleId = ID;
             Console.Write("\tduration of the trip: ");
