@@ -29,51 +29,61 @@ namespace Homework2
                 Console.WriteLine("\ta\t-\tadd vehicle");
                 Console.WriteLine("\tb\t-\tremove vehicle");
                 Console.WriteLine("\tc\t-\trent vehicle");
-                Console.WriteLine("\td\t-\tlist inventory of vehicles of specified brand");
-                Console.WriteLine("\te\t-\tlist of predetermined vehicles of a chosen model");
-                Console.WriteLine("\tf\t-\tcalculate total vehicle fleet value");
-                Console.WriteLine("\tg\t-\tlist of vehicles of a chosen brand and color");
-                Console.WriteLine("\th\t-\tlist of vehicles that are within 1000 km of requiring maintenance");
+                Console.WriteLine("\td\t-\tgenerate vehicles");
+                Console.WriteLine("\te\t-\tgenerate rents");
+                Console.WriteLine("\tf\t-\tlist inventory of vehicles of specified brand");
+                Console.WriteLine("\tg\t-\tlist of predetermined vehicles of a chosen model");
+                Console.WriteLine("\th\t-\tcalculate total vehicle fleet value");
+                Console.WriteLine("\ti\t-\tlist of vehicles of a chosen brand and color");
+                Console.WriteLine("\tj\t-\tlist of vehicles that are within 1000 km of requiring maintenance");
 
                 bool wrongChar = true;
                 while (wrongChar)
                 {
                     Console.WriteLine("\nPlease enter the symbol of the function");
                     Console.Write("\tfunction: ");
-                    char function = (char)Console.Read();
-                    function = Char.ToUpper(function);
+                    string function = Console.ReadLine();
+                    function = function.ToUpper();
 
                     switch (function)
                     {
-                        case 'A':
+                        case "A":
                             container.TypeVehicleAndAddToFile();
                             wrongChar = false;
                             break;
-                        case 'B':
+                        case "B":
                             container.RemoveVehicle();
                             wrongChar = false;
                             break;
-                        case 'C':
+                        case "C":
                             container.RentVehicle();
                             wrongChar = false;
                             break;
-                        case 'D':
+                        case "D":
+                            generator.GeneratingVehicles();
+                            wrongChar = false;
+                            break;
+                        case "E":
+                            generator.GeneratingRentals();
+                            wrongChar = false;
+                            break;
+                        case "F":
                             searcher.VehicleListOfBrand();
                             wrongChar = false;
                             break;
-                        case 'E':
+                        case "G":
                             searcher.PredeterminedVehiclesList();
                             wrongChar = false;
                             break;
-                        case 'F':
+                        case "H":
                             searcher.TotalValueOfVehicles();
                             wrongChar = false;
                             break;
-                        case 'G':
+                        case "I":
                             searcher.VehicleListofBrandAndColor();
                             wrongChar = false;
                             break;
-                        case 'H':
+                        case "J":
                             searcher.ServiceNeededVehiclesList();
                             wrongChar = false;
                             break;
@@ -94,7 +104,7 @@ namespace Homework2
             bool correct = false;
             while (!correct)
             {
-                Console.WriteLine("Do you want to continue?");
+                Console.WriteLine("\nDo you want to continue?");
                 Console.Write("\tanswer (yes/no): ");
 
                 var ans = Console.ReadLine();
@@ -103,8 +113,10 @@ namespace Homework2
                 switch (ans)
                 {
                     case "YES":
+                        Console.WriteLine("Please enter any key");
                         return true;
                     case "NO":
+                        Console.WriteLine("Please enter any key");
                         return false;
                     default:
                         Console.WriteLine("Incorrect answer");
@@ -113,6 +125,7 @@ namespace Homework2
                         break;
                 }
             }
+            Console.WriteLine("Please enter any key");
             return false;
         }
     }

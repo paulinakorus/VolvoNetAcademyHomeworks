@@ -33,6 +33,24 @@ namespace Homework2.service
             random = new Random();
         }
 
+        private int CorrectInt(string beforeText)
+        {
+            string text;
+            var outText = 0;
+            var correctText = false;
+            var quantity = 0;
+            while (!correctText)
+            {
+                if (++quantity != 1)
+                    Console.WriteLine("Wrong number. Try again, please");
+                Console.Write(beforeText);
+
+                text = Console.ReadLine();
+                correctText = int.TryParse(text, out outText);
+            }
+            return outText;
+        }
+
         public void GeneratingVehicles()
         {
             var passengerFile = new FileInfo(PassengerVehicleFilePath);
@@ -45,13 +63,10 @@ namespace Homework2.service
                 VehicleContainer.ReadVehicleFiles();
             }
                 
-            Console.WriteLine("Generating Vehicles");
-            Console.Write("\tpassenger vehicles: ");
-            PassengerVehicleNumber = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("\nGenerating Vehicles");
+            PassengerVehicleNumber = CorrectInt("\tpassenger vehicles: ");
+            CargoVehicleNumber = CorrectInt("\tcargo vehicles: ");
 
-            Console.Write("\tcargo vehicles: ");
-            CargoVehicleNumber = Convert.ToInt32(Console.ReadLine());
-            
             for (int i = 0; i < PassengerVehicleNumber; i++)
             {
                 PassengerVehicle passengerVehicle = new PassengerVehicle();
@@ -103,11 +118,8 @@ namespace Homework2.service
         public void GeneratingRentals()                                                         // synchronize to rent
         {
             Console.WriteLine("\nGenerating Rentals");
-            Console.Write("\tpassenger vehicles rentals: ");
-            PassengerVehicleRentalNumber = Convert.ToInt32(Console.ReadLine());
-
-            Console.Write("\tcargo vehicles rentals: ");
-            CargoVehicleRentalNumber = Convert.ToInt32(Console.ReadLine());
+            PassengerVehicleRentalNumber = CorrectInt("\tpassenger vehicles rentals: ");
+            CargoVehicleRentalNumber = CorrectInt("\tcargo vehicles rentals: ");
 
             var passengerFile = new FileInfo(PassengerRentalFilePath);
             var cargoFile = new FileInfo(CargoRentalFilePath);

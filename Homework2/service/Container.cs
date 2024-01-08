@@ -29,19 +29,59 @@ namespace Homework2.service
             PassengerRentalList = new List<RentPassengerVehicle>();
             CargoRentalList = new List<RentCargoVehicle>();
         }
+
+        private int CorrectInt(string beforeText)
+        {
+            string text;
+            var outText = 0;
+            var correctText = false;
+            var quantity = 0;
+            while (!correctText)
+            {
+                if (++quantity != 1)
+                    Console.WriteLine("Wrong number. Try again, please");
+                Console.Write(beforeText);
+
+                text = Console.ReadLine();
+                correctText = int.TryParse(text, out outText);
+            }
+            return outText;
+        }
+
+        private double CorrectDouble(string beforeText)
+        {
+            string text;
+            var outText = 0.0d;
+            var correctText = false;
+            var quantity = 0;
+            while (!correctText)
+            {
+                if (++quantity != 1)
+                    Console.WriteLine("Wrong number. Try again, please");
+                Console.Write(beforeText);
+
+                text = Console.ReadLine();
+                correctText = double.TryParse(text, out outText);
+            }
+            return outText;
+        }
+
         public void TypeVehicleAndAddToFile()
         {
-            Console.WriteLine("Typing vehicle");
+            Console.WriteLine("\nTyping vehicle");
             Console.WriteLine("\t1 - passenger vehicle ");
             Console.WriteLine("\t2 - cargo vehicle");
             
             string type = null;
-            do
-            {
-                Console.WriteLine("Please insert the number of the type");
+            int quantity = 0;
+            while (type != "1" && type != "2"){
+                if (++quantity != 1)
+                    Console.WriteLine("Wrong symbol. Try again, please");
+
+                Console.WriteLine("\nPlease insert the number of the type");
                 Console.Write("\ttype: ");
                 type = Console.ReadLine();
-            } while (type != "1" && type != "2");
+            }
             
             if(type == "1")
             {
@@ -65,16 +105,13 @@ namespace Homework2.service
             obj.Brand = Console.ReadLine();
             Console.Write("\tmodel: ");
             obj.Model = Console.ReadLine();
-            Console.Write("\tyear of manufacture: ");
-            obj.YearOfManufacture = Convert.ToInt32(Console.ReadLine());
+            obj.YearOfManufacture = CorrectInt("\tyear of manufacture: ");
             Console.Write("\tcolor: ");
             obj.Color = Console.ReadLine();
-            Console.Write("\tprice: ");
-            obj.Price = Convert.ToInt32(Console.ReadLine());
+            obj.Price = CorrectInt("\tprice: ");
             Console.Write("\tregistration number: ");
             obj.RegistrationNumber = Console.ReadLine();
-            Console.Write("\tmodel specific coefficient: ");
-            obj.ModelSpecificCoefficient = Convert.ToDouble(Console.ReadLine());
+            obj.ModelSpecificCoefficient = CorrectDouble("\tmodel specific coefficient: ");
 
             return obj;
         }
@@ -94,8 +131,7 @@ namespace Homework2.service
         public void RemoveVehicle()
         {
             Console.WriteLine("Removing vehicle");
-            Console.Write("\tid of vehicle: ");
-            int ID = Convert.ToInt32(Console.ReadLine());
+            int ID = CorrectInt("\tid of vehicle: ");
 
             ReadVehicleFiles();
             foreach(PassengerVehicle vehicle in PassengerList)
@@ -123,8 +159,7 @@ namespace Homework2.service
         public void RentVehicle()
         {
             Console.WriteLine("Renting vehicle");
-            Console.Write("\tid of vehicle: ");
-            int ID = Convert.ToInt32(Console.ReadLine());
+            int ID = CorrectInt("\tid of vehicle: ");
 
             ReadVehicleFiles();
             foreach (PassengerVehicle vehicle in PassengerList)
@@ -135,8 +170,7 @@ namespace Homework2.service
                     Console.WriteLine("Passenger vehicle");
                     TypeRent(rentPassenger, ID);
 
-                    Console.Write("\tlessee rating: ");
-                    rentPassenger.LesseeRating = Convert.ToDouble(Console.ReadLine());
+                    rentPassenger.LesseeRating = CorrectDouble("\tlessee rating: ");
                     vehicle.synchronizeAverageLesseeRating(rentPassenger.LesseeRating);
                     vehicle.synchronizeToRent(rentPassenger);
 
@@ -156,8 +190,7 @@ namespace Homework2.service
                     Console.WriteLine("Cargo vehicle");
                     TypeRent(rentCargo, ID);
 
-                    Console.Write("\tweight: ");
-                    rentCargo.Weight = Convert.ToInt32(Console.ReadLine());
+                    rentCargo.Weight = CorrectInt("\tweight: ");
 
                     vehicle.synchronizeToRent(rentCargo);
 
@@ -174,10 +207,8 @@ namespace Homework2.service
         private void TypeRent(Rent rent, int ID)
         {
             rent.VehicleId = ID;
-            Console.Write("\tduration of the trip: ");
-            rent.DurationOfTheTrip = Convert.ToInt32(Console.ReadLine());
-            Console.Write("\ttravel distance: ");
-            rent.TravelDistance = Convert.ToInt32(Console.ReadLine());
+            rent.DurationOfTheTrip = CorrectInt("\tduration of the trip: ");
+            rent.TravelDistance = CorrectInt("\ttravel distance: ");
         }
 
         public void WriteVehiclesToFiles()
