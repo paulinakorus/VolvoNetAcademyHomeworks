@@ -130,7 +130,7 @@ namespace Homework2.service
 
         public void RemoveVehicle()
         {
-            Console.WriteLine("Removing vehicle");
+            Console.WriteLine("\nRemoving vehicle");
             int ID = CorrectInt("\tid of vehicle: ");
 
             ReadVehicleFiles();
@@ -213,7 +213,7 @@ namespace Homework2.service
 
         public void WriteVehiclesToFiles()
         {
-            if (PassengerList.Count != 0 && CargoList.Count != 0)
+            if (PassengerList.Count != 0 || CargoList.Count != 0)
             {
                 using (StreamWriter passengerInput = new StreamWriter(passengerVehiclePath, false))
                 {
