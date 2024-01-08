@@ -14,6 +14,12 @@ namespace Homework2
             string passengerRentalPath = Path.Combine(beginningPath, "PassengerRentalFile.txt");
             string cargoRentalPath = Path.Combine(beginningPath, "CargoRentalFile.txt");
 
+            FileInfo[] files = { new FileInfo(passengerVehiclePath), new FileInfo(cargoVehiclePath), new FileInfo(passengerRentalPath), new FileInfo(cargoRentalPath) };
+            foreach (FileInfo file in files)
+            {
+                DelateFile(file);
+            }
+
             Container container = new Container();
             GeneratingData generator = new GeneratingData(passengerVehiclePath, cargoVehiclePath, passengerRentalPath, cargoRentalPath, container);
             DataSearcher searcher = new DataSearcher(container);
@@ -127,6 +133,12 @@ namespace Homework2
             }
             Console.WriteLine("Please enter any key");
             return false;
+        }
+
+        static void DelateFile(FileInfo file)
+        {
+            if (file.Exists)
+                File.Delete(file.FullName);
         }
     }
 }

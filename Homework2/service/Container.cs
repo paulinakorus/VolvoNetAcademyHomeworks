@@ -158,7 +158,7 @@ namespace Homework2.service
 
         public void RentVehicle()
         {
-            Console.WriteLine("Renting vehicle");
+            Console.WriteLine("\nRenting vehicle");
             int ID = CorrectInt("\tid of vehicle: ");
 
             ReadVehicleFiles();
