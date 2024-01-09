@@ -109,6 +109,7 @@ namespace Homework2.service
             Console.Write("\tcolor: ");
             obj.Color = Console.ReadLine();
             obj.Price = CorrectInt("\tprice: ");
+            obj.PutComfortClass();
             Console.Write("\tregistration number: ");
             obj.RegistrationNumber = Console.ReadLine();
             obj.ModelSpecificCoefficient = CorrectDouble("\tmodel specific coefficient: ");

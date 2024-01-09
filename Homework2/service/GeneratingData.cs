@@ -109,6 +109,7 @@ namespace Homework2.service
             obj.YearOfManufacture = 2000 + random.Next(0, 24);
             obj.Color = colorExamples[random.Next(0, colorExamples.Length - 1)];
             obj.Price = random.Next(1, 20) * 10000;
+            obj.PutComfortClass();
             obj.RegistrationNumber = GeneratingRegistrationNumber();
             obj.ModelSpecificCoefficient = 1.00 + random.NextDouble();
 

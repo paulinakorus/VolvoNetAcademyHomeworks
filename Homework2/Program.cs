@@ -2,6 +2,12 @@
 using Homework2.service;
 using System.Text;
 
+/*
+    change lists to one
+    view lists
+    comfort class
+
+*/
 namespace Homework2
 {
     internal class Program

@@ -19,6 +19,7 @@ namespace Homework2.model
         public int TravelDistance { get; set; }
         public int DurationOfTheTrips { get; set; }
         public double ModelSpecificCoefficient { get; set; }
+        public ComfortClass ComfortClass { get; set; }
         public static List<Vehicle> vehicleList { get; set; } = new List<Vehicle>();
 
         public Vehicle()
@@ -33,6 +34,22 @@ namespace Homework2.model
         {
             TravelDistance += rent.TravelDistance;
             DurationOfTheTrips += rent.DurationOfTheTrip;
+        }
+
+        public void PutComfortClass()
+        {
+            if(Price != null)
+            {
+                if (Price <= 50000)
+                    ComfortClass = ComfortClass.Economy;
+                else if (Price <= 150000)
+                    ComfortClass = ComfortClass.Premium;
+                else
+                    ComfortClass = ComfortClass.Gold;
+            } else
+            {
+                Console.WriteLine("Price is null. Insert information, please");
+            }
         }
     }
 }
