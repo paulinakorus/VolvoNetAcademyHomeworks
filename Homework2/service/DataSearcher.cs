@@ -128,7 +128,7 @@ namespace Homework2.service
             }
             foreach (var vehicle in Container.CargoList)
             {
-                yearLose = (vehicle.GetType() == typeof(PassengerVehicle)) ? 0.1 : 0.07;
+                yearLose = (vehicle.GetType() == typeof(CargoVehicle)) ? 0.1 : 0.07;
                 oneValue = VehicleValue(vehicle, yearLose);
                 totalValue += oneValue;
             }

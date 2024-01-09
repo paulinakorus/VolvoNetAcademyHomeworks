@@ -23,7 +23,7 @@ namespace Homework2
             string cargoRentalPath = Path.Combine(beginningPath, "CargoRentalFile.txt");
             string[] files = { passengerVehiclePath, cargoVehiclePath, passengerRentalPath, cargoRentalPath };
 
-            DelateFiles(files);
+            DelateData(files);
 
             Container container = new Container();
             GeneratingData generator = new GeneratingData(passengerVehiclePath, cargoVehiclePath, passengerRentalPath, cargoRentalPath, container);
@@ -179,7 +179,7 @@ namespace Homework2
             return false;
         }
 
-        static void DelateFiles(string[] files)
+        static void DelateData(string[] files)
         {
             foreach (string file in files)
             {
