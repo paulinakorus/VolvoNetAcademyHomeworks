@@ -30,6 +30,20 @@ namespace Homework2.service
             CargoRentalList = new List<RentCargoVehicle>();
         }
 
+        public List<Vehicle> GetWholeVehicleList()
+        { 
+            List<Vehicle> resultList = new List<Vehicle>();
+            foreach (var vehicle in PassengerList)
+            {
+                resultList.Add(vehicle);
+            }
+            foreach (var vehicle in CargoList)
+            {
+                resultList.Add(vehicle);
+            }
+            return resultList;
+        }
+
         private bool IsFileEmpty(string filePath)
         {
             FileInfo fileInfo = new FileInfo(filePath);

@@ -18,30 +18,17 @@ namespace Homework2.service
         public List<Vehicle> VehicleListOfBrand()
         {
             Container.ReadVehicleFiles();
+            List<Vehicle> vehicleList = Container.GetWholeVehicleList();
 
             Console.WriteLine("\nList of vehicles from a inserted brand");
             Console.Write("\tbrand: ");
             string insertedBrand = Console.ReadLine();
 
-            var brandPassengerList = Container.PassengerList
+            var resultList = vehicleList
                 .OrderBy(x => x.Brand)
                 .Where(x => x.Brand == insertedBrand)
                 .ToList();
 
-            var brandCargoList = Container.CargoList
-                .OrderBy(x => x.Brand)
-                .Where(x => x.Brand == insertedBrand)
-                .ToList();
-
-            List<Vehicle> resultList = new List<Vehicle>();
-            foreach (var vehicle in brandPassengerList)
-            {
-                resultList.Add(vehicle);
-            }
-            foreach (var vehicle in brandCargoList)
-            {
-                resultList.Add(vehicle);
-            }
             return resultList;
         }
 
@@ -80,6 +67,7 @@ namespace Homework2.service
         public List<Vehicle> ServiceNeededVehiclesList()
         {
             Container.ReadVehicleFiles();
+            List<Vehicle> vehicleList = Container.GetWholeVehicleList();
 
             Console.WriteLine("\nList of vehicles which need service soon");
 
@@ -106,6 +94,7 @@ namespace Homework2.service
         public List<Vehicle> VehicleListofBrandAndColor()
         {
             Container.ReadVehicleFiles();
+            List<Vehicle> vehicleList = Container.GetWholeVehicleList();
 
             Console.WriteLine("\nList of vehicles from a inserted brand with a inserted color");
             Console.Write("\tbrand: ");
@@ -114,28 +103,11 @@ namespace Homework2.service
             string insertedColor = Console.ReadLine();
 
 
-            var brandAndColorPassengerList = Container.PassengerList
+            var resultList = vehicleList
                 .OrderBy(x => x.ComfortClass)
                 .Where(x => x.Brand == insertedBrand)
                 .Where(x => x.Color == insertedColor)
                 .ToList();
-
-            var brandAndColorCargoList = Container.CargoList
-               .OrderBy(x => x.ComfortClass)
-               .Where(x => x.Brand == insertedBrand)
-               .Where(x => x.Color == insertedColor)
-               .ToList();
-
-            List<Vehicle> resultList = new List<Vehicle>();
-
-            foreach (var vehicle in brandAndColorPassengerList)
-            {
-                resultList.Add(vehicle);
-            }
-            foreach (var vehicle in brandAndColorCargoList)
-            {
-                resultList.Add(vehicle);
-            }
 
             return resultList;
         }
