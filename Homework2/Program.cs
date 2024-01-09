@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.Json;
 using System.Xml;
 using Newtonsoft.Json;
+using System.Numerics;
 
 /*
     change lists to one
@@ -14,16 +15,16 @@ namespace Homework2
 {
     internal class Program
     {
-        private static string beginningPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-        private static string passengerVehiclePath = Path.Combine(beginningPath, "PassengerVehicleFile.txt");
-        private static string cargoVehiclePath = Path.Combine(beginningPath, "CargoVehicleFile.txt");
-        private static string passengerRentalPath = Path.Combine(beginningPath, "PassengerRentalFile.txt");
-        private static string cargoRentalPath = Path.Combine(beginningPath, "CargoRentalFile.txt");
-        private static FileInfo[] files = { new FileInfo(passengerVehiclePath), new FileInfo(cargoVehiclePath), new FileInfo(passengerRentalPath), new FileInfo(cargoRentalPath) };
         static void Main(string[] args)
         {
+            string beginningPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            string passengerVehiclePath = Path.Combine(beginningPath, "PassengerVehicleFile.txt");
+            string cargoVehiclePath = Path.Combine(beginningPath, "CargoVehicleFile.txt");
+            string passengerRentalPath = Path.Combine(beginningPath, "PassengerRentalFile.txt");
+            string cargoRentalPath = Path.Combine(beginningPath, "CargoRentalFile.txt");
+            FileInfo[] files = { new FileInfo(passengerVehiclePath), new FileInfo(cargoVehiclePath), new FileInfo(passengerRentalPath), new FileInfo(cargoRentalPath) };
 
-            DelateFiles();
+            DelateFiles(files);
 
             Container container = new Container();
             GeneratingData generator = new GeneratingData(passengerVehiclePath, cargoVehiclePath, passengerRentalPath, cargoRentalPath, container);
@@ -78,7 +79,7 @@ namespace Homework2
                             wrongAction = false;
                             break;
                         case "F":
-                            if (VehiclesFileExists())
+                            if (VehiclesFileExists(files))
                             {
                                 ViewList(searcher.VehicleListOfBrand());
                                 wrongAction = false;
@@ -90,7 +91,7 @@ namespace Homework2
                             }
                             break;
                         case "G":
-                            if (VehiclesFileExists())
+                            if (VehiclesFileExists(files))
                             {
                                 ViewList(searcher.PredeterminedVehiclesList());
                                 wrongAction = false;
@@ -102,9 +103,9 @@ namespace Homework2
                             }
                             break;
                         case "H":
-                            if (VehiclesFileExists())
+                            if (VehiclesFileExists(files))
                             {
-                                Console.WriteLine($"value: {searcher.TotalValueOfVehicles()}");
+                                Console.WriteLine($"\ttotal vehicle fleet value: {searcher.TotalValueOfVehicles()}");
                                 wrongAction = false;
                             }
                             else
@@ -114,7 +115,7 @@ namespace Homework2
                             }
                             break;
                         case "I":
-                            if (VehiclesFileExists())
+                            if (VehiclesFileExists(files))
                             {
                                 ViewList(searcher.VehicleListofBrandAndColor());
                                 wrongAction = false;
@@ -126,7 +127,7 @@ namespace Homework2
                             }
                             break;
                         case "J":
-                            if (VehiclesFileExists())
+                            if (VehiclesFileExists(files))
                             {
                                 ViewList(searcher.ServiceNeededVehiclesList());
                                 wrongAction = false;
@@ -179,7 +180,7 @@ namespace Homework2
             return false;
         }
 
-        static void DelateFiles()
+        static void DelateFiles(FileInfo[] files)
         {
             foreach (FileInfo file in files)
             {
@@ -188,12 +189,14 @@ namespace Homework2
             }
         }
 
-        static bool VehiclesFileExists()
+        static bool VehiclesFileExists(FileInfo[] files)
         {
+            FileInfo[] fileInfos = files;
             bool exist = false;
             for (int i = 0; i < 2; i++)
             {
-                if (files[i].Exists)
+                bool oneExist = fileInfos[i].Exists;
+                if (oneExist)
                 {
                     exist = true;
                     break;
@@ -204,10 +207,15 @@ namespace Homework2
 
         static void ViewList(List<Vehicle> list)
         {
-            foreach (Object obj in list)
+            if(list.Count != 0)
             {
-                Console.WriteLine(JsonConvert.SerializeObject(obj, (Newtonsoft.Json.Formatting)System.Xml.Formatting.Indented));
+                foreach (Object obj in list)
+                {
+                    Console.WriteLine(JsonConvert.SerializeObject(obj, (Newtonsoft.Json.Formatting)System.Xml.Formatting.Indented));
+                }
             }
+            else
+                Console.WriteLine("No specified vehicles in the List");
         }
     }
 }
