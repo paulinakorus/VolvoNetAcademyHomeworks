@@ -9,7 +9,6 @@ using System.Numerics;
 
 /*
     change lists to one
-    view lists
 */
 namespace Homework2
 {
@@ -22,7 +21,7 @@ namespace Homework2
             string cargoVehiclePath = Path.Combine(beginningPath, "CargoVehicleFile.txt");
             string passengerRentalPath = Path.Combine(beginningPath, "PassengerRentalFile.txt");
             string cargoRentalPath = Path.Combine(beginningPath, "CargoRentalFile.txt");
-            FileInfo[] files = { new FileInfo(passengerVehiclePath), new FileInfo(cargoVehiclePath), new FileInfo(passengerRentalPath), new FileInfo(cargoRentalPath) };
+            string[] files = { passengerVehiclePath, cargoVehiclePath, passengerRentalPath, cargoRentalPath };
 
             DelateFiles(files);
 
@@ -180,22 +179,25 @@ namespace Homework2
             return false;
         }
 
-        static void DelateFiles(FileInfo[] files)
+        static void DelateFiles(string[] files)
         {
-            foreach (FileInfo file in files)
+            foreach (string file in files)
             {
-                if (file.Exists)
-                    File.Delete(file.FullName);
+                if (File.Exists(file))
+                    if (!IsFileEmpty(file))
+                        File.WriteAllText(file, string.Empty);
             }
         }
 
-        static bool VehiclesFileExists(FileInfo[] files)
+        static bool VehiclesFileExists(string[] files)
         {
-            FileInfo[] fileInfos = files;
+            string[] fileInfos = files;
             bool exist = false;
+            bool oneExist = false;
             for (int i = 0; i < 2; i++)
             {
-                bool oneExist = fileInfos[i].Exists;
+                if (File.Exists(fileInfos[i]))
+                    oneExist = !IsFileEmpty(fileInfos[i]);
                 if (oneExist)
                 {
                     exist = true;
@@ -216,6 +218,12 @@ namespace Homework2
             }
             else
                 Console.WriteLine("No specified vehicles in the List");
+        }
+
+        static bool IsFileEmpty(string filePath)
+        {
+            FileInfo fileInfo = new FileInfo(filePath);
+            return fileInfo.Length == 0;
         }
     }
 }

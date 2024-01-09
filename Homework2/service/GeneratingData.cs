@@ -33,6 +33,14 @@ namespace Homework2.service
             random = new Random();
         }
 
+        private bool IsFileEmpty(string filePath)
+        {
+            FileInfo fileInfo = new FileInfo(filePath);
+            if (fileInfo.Exists && (fileInfo.Length == 0))
+                return false;
+            return true;
+        }
+
         private int CorrectInt(string beforeText)
         {
             string text;
@@ -53,12 +61,10 @@ namespace Homework2.service
 
         public void GeneratingVehicles()
         {
-            var passengerFile = new FileInfo(PassengerVehicleFilePath);
-            var cargoFile = new FileInfo(CargoVehicleFilePath);
-            bool ifPassengerFileExist = passengerFile.Exists;
-            bool ifCargoFileExist = cargoFile.Exists;
+            bool ifPassengerFileEmpty = IsFileEmpty(PassengerVehicleFilePath);
+            bool ifCargoFileEmpty = IsFileEmpty(CargoVehicleFilePath);
 
-            if (ifPassengerFileExist && ifCargoFileExist)
+            if (!ifPassengerFileEmpty && !ifCargoFileEmpty)
             {
                 VehicleContainer.ReadVehicleFiles();
             }
@@ -122,12 +128,10 @@ namespace Homework2.service
             PassengerVehicleRentalNumber = CorrectInt("\tpassenger vehicles rentals: ");
             CargoVehicleRentalNumber = CorrectInt("\tcargo vehicles rentals: ");
 
-            var passengerFile = new FileInfo(PassengerRentalFilePath);
-            var cargoFile = new FileInfo(CargoRentalFilePath);
-            bool ifPassengerFileExist = passengerFile.Exists;
-            bool ifCargoFileExist = cargoFile.Exists;
+            bool ifPassengerFileEmpty = IsFileEmpty(PassengerRentalFilePath);
+            bool ifCargoFileEmpty = IsFileEmpty(CargoRentalFilePath);
 
-            if (ifPassengerFileExist && ifCargoFileExist)
+            if (!ifPassengerFileEmpty && !ifCargoFileEmpty)
             {
                 VehicleContainer.ReadRentalFiles();
             }

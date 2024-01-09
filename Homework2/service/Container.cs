@@ -30,10 +30,19 @@ namespace Homework2.service
             CargoRentalList = new List<RentCargoVehicle>();
         }
 
+        private bool IsFileEmpty(string filePath)
+        {
+            FileInfo fileInfo = new FileInfo(filePath);
+            if (fileInfo.Exists && (fileInfo.Length == 0))
+                return false;
+            return true;
+        }
+
         private int CorrectInt(string beforeText)
         {
             string text;
             var outText = 0;
+            var correctInt = false;
             var correctText = false;
             var quantity = 0;
             while (!correctText)
@@ -43,7 +52,10 @@ namespace Homework2.service
                 Console.Write(beforeText);
 
                 text = Console.ReadLine();
-                correctText = int.TryParse(text, out outText);
+                correctInt = int.TryParse(text, out outText);
+                if ((correctInt == true) && outText < 0)
+                    correctInt = false;
+                correctText = correctInt;
             }
             return outText;
         }
@@ -53,6 +65,7 @@ namespace Homework2.service
             string text;
             var outText = 0.0d;
             var correctText = false;
+            var correctDouble = false;
             var quantity = 0;
             while (!correctText)
             {
@@ -61,7 +74,10 @@ namespace Homework2.service
                 Console.Write(beforeText);
 
                 text = Console.ReadLine();
-                correctText = double.TryParse(text, out outText);
+                correctDouble = double.TryParse(text, out outText);
+                if ((correctDouble == true) && outText < 0)
+                    correctDouble = false;
+                correctText = correctDouble;
             }
             return outText;
         }
@@ -236,12 +252,10 @@ namespace Homework2.service
 
         public void ReadVehicleFiles()
         {
-            var passengerFile = new FileInfo(passengerVehiclePath);
-            var cargoFile = new FileInfo(cargoVehiclePath);
-            bool ifPassengerFileExist = passengerFile.Exists;
-            bool ifCargoFileExist = cargoFile.Exists;
+            bool ifPassengerFileEmpty = IsFileEmpty(passengerVehiclePath);
+            bool ifCargoFileEmpty = IsFileEmpty(cargoVehiclePath);
 
-            if (ifPassengerFileExist && ifCargoFileExist)
+            if (ifPassengerFileEmpty && ifCargoFileEmpty)
             {
                 string passengerTextFile = File.ReadAllText(passengerVehiclePath);
                 string cargoTextFile = File.ReadAllText(cargoVehiclePath);
@@ -277,12 +291,10 @@ namespace Homework2.service
         }
         public void ReadRentalFiles()
         {
-            var passengerFile = new FileInfo(passengerRentalPath);
-            var cargoFile = new FileInfo(cargoRentalPath);
-            bool ifPassengerFileExist = passengerFile.Exists;
-            bool ifCargoFileExist = cargoFile.Exists;
+            bool ifPassengerFileEmpty = IsFileEmpty(passengerRentalPath);
+            bool ifCargoFileEmpty = IsFileEmpty(cargoRentalPath);
 
-            if (ifPassengerFileExist && ifCargoFileExist)
+            if (ifPassengerFileEmpty && ifCargoFileEmpty)
             {
                 string passengerTextFile = File.ReadAllText(passengerRentalPath);
                 string cargoTextFile = File.ReadAllText(cargoRentalPath);
