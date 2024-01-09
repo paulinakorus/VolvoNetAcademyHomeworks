@@ -1,12 +1,14 @@
 ﻿using Homework2.model;
 using Homework2.service;
+using System.IO;
 using System.Text;
+using System.Text.Json;
+using System.Xml;
+using Newtonsoft.Json;
 
 /*
     change lists to one
     view lists
-    comfort class
-
 */
 namespace Homework2
 {
@@ -33,7 +35,7 @@ namespace Homework2
                 Console.Clear();
                 Console.WriteLine("Homework 2");
                 Console.WriteLine("Leasing Company");
-                
+
                 Console.WriteLine("\ta\t-\tadd vehicle");
                 Console.WriteLine("\tb\t-\tremove vehicle");
                 Console.WriteLine("\tc\t-\trent vehicle");
@@ -78,9 +80,10 @@ namespace Homework2
                         case "F":
                             if (VehiclesFileExists())
                             {
-                                searcher.VehicleListOfBrand();
+                                ViewList(searcher.VehicleListOfBrand());
                                 wrongAction = false;
-                            } else
+                            }
+                            else
                             {
                                 Console.WriteLine("Files does not exist. Try again, please");
                                 wrongAction = true;
@@ -89,7 +92,7 @@ namespace Homework2
                         case "G":
                             if (VehiclesFileExists())
                             {
-                                searcher.PredeterminedVehiclesList();
+                                ViewList(searcher.PredeterminedVehiclesList());
                                 wrongAction = false;
                             }
                             else
@@ -101,7 +104,7 @@ namespace Homework2
                         case "H":
                             if (VehiclesFileExists())
                             {
-                                searcher.TotalValueOfVehicles();
+                                Console.WriteLine($"value: {searcher.TotalValueOfVehicles()}");
                                 wrongAction = false;
                             }
                             else
@@ -113,7 +116,7 @@ namespace Homework2
                         case "I":
                             if (VehiclesFileExists())
                             {
-                                searcher.VehicleListofBrandAndColor();
+                                ViewList(searcher.VehicleListofBrandAndColor());
                                 wrongAction = false;
                             }
                             else
@@ -125,7 +128,7 @@ namespace Homework2
                         case "J":
                             if (VehiclesFileExists())
                             {
-                                searcher.ServiceNeededVehiclesList();
+                                ViewList(searcher.ServiceNeededVehiclesList());
                                 wrongAction = false;
                             }
                             else
@@ -141,6 +144,7 @@ namespace Homework2
                     }
                 }
                 continuing = Answer();
+                Console.ReadLine();
             }
             Console.WriteLine("The end of the program");
         }
@@ -172,7 +176,6 @@ namespace Homework2
                 }
             }
             Console.WriteLine("Please enter any key");
-            Console.ReadLine();
             return false;
         }
 
@@ -188,12 +191,23 @@ namespace Homework2
         static bool VehiclesFileExists()
         {
             bool exist = false;
-            for(int i=0; i<2; i++)
+            for (int i = 0; i < 2; i++)
             {
                 if (files[i].Exists)
+                {
                     exist = true;
+                    break;
+                }
             }
             return exist;
+        }
+
+        static void ViewList(List<Vehicle> list)
+        {
+            foreach (Object obj in list)
+            {
+                Console.WriteLine(JsonConvert.SerializeObject(obj, (Newtonsoft.Json.Formatting)System.Xml.Formatting.Indented));
+            }
         }
     }
 }

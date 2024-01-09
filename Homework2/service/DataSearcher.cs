@@ -19,7 +19,7 @@ namespace Homework2.service
         {
             Container.ReadVehicleFiles();
 
-            Console.WriteLine("List of vehicles from a inserted brand");
+            Console.WriteLine("\nList of vehicles from a inserted brand");
             Console.Write("\tbrand: ");
             string insertedBrand = Console.ReadLine();
 
@@ -49,7 +49,7 @@ namespace Homework2.service
         {
             Container.ReadVehicleFiles();
 
-            Console.WriteLine("List of predetermined vehicles of the model");
+            Console.WriteLine("\nList of predetermined vehicles of the model");
             Console.Write("\tmodel: ");
             string insertedModel = Console.ReadLine();
 
@@ -81,7 +81,7 @@ namespace Homework2.service
         {
             Container.ReadVehicleFiles();
 
-            Console.WriteLine("List of vehicles which need service soon");
+            Console.WriteLine("\nList of vehicles which need service soon");
 
             var neededPassengerList = Container.PassengerList
                 .Where(x => (((x.TravelDistance) % 5000) >= (5000 - 1000)))
@@ -107,7 +107,7 @@ namespace Homework2.service
         {
             Container.ReadVehicleFiles();
 
-            Console.WriteLine("List of vehicles from a inserted brand with a inserted color");
+            Console.WriteLine("\nList of vehicles from a inserted brand with a inserted color");
             Console.Write("\tbrand: ");
             string insertedBrand = Console.ReadLine();
             Console.Write("\tcolor: ");
