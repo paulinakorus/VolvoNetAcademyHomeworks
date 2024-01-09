@@ -12,19 +12,16 @@ namespace Homework2
 {
     internal class Program
     {
+        private static string beginningPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+        private static string passengerVehiclePath = Path.Combine(beginningPath, "PassengerVehicleFile.txt");
+        private static string cargoVehiclePath = Path.Combine(beginningPath, "CargoVehicleFile.txt");
+        private static string passengerRentalPath = Path.Combine(beginningPath, "PassengerRentalFile.txt");
+        private static string cargoRentalPath = Path.Combine(beginningPath, "CargoRentalFile.txt");
+        private static FileInfo[] files = { new FileInfo(passengerVehiclePath), new FileInfo(cargoVehiclePath), new FileInfo(passengerRentalPath), new FileInfo(cargoRentalPath) };
         static void Main(string[] args)
         {
-            string beginningPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            string passengerVehiclePath = Path.Combine(beginningPath, "PassengerVehicleFile.txt");
-            string cargoVehiclePath = Path.Combine(beginningPath, "CargoVehicleFile.txt");
-            string passengerRentalPath = Path.Combine(beginningPath, "PassengerRentalFile.txt");
-            string cargoRentalPath = Path.Combine(beginningPath, "CargoRentalFile.txt");
 
-            FileInfo[] files = { new FileInfo(passengerVehiclePath), new FileInfo(cargoVehiclePath), new FileInfo(passengerRentalPath), new FileInfo(cargoRentalPath) };
-            foreach (FileInfo file in files)
-            {
-                DelateFile(file);
-            }
+            DelateFiles();
 
             Container container = new Container();
             GeneratingData generator = new GeneratingData(passengerVehiclePath, cargoVehiclePath, passengerRentalPath, cargoRentalPath, container);
@@ -36,7 +33,6 @@ namespace Homework2
                 Console.Clear();
                 Console.WriteLine("Homework 2");
                 Console.WriteLine("Leasing Company");
-
                 
                 Console.WriteLine("\ta\t-\tadd vehicle");
                 Console.WriteLine("\tb\t-\tremove vehicle");
@@ -49,8 +45,8 @@ namespace Homework2
                 Console.WriteLine("\ti\t-\tlist of vehicles of a chosen brand and color");
                 Console.WriteLine("\tj\t-\tlist of vehicles that are within 1000 km of requiring maintenance");
 
-                bool wrongChar = true;
-                while (wrongChar)
+                bool wrongAction = true;
+                while (wrongAction)
                 {
                     Console.WriteLine("\nPlease enter the symbol of the function");
                     Console.Write("\tfunction: ");
@@ -61,52 +57,90 @@ namespace Homework2
                     {
                         case "A":
                             container.TypeVehicleAndAddToFile();
-                            wrongChar = false;
+                            wrongAction = false;
                             break;
                         case "B":
                             container.RemoveVehicle();
-                            wrongChar = false;
+                            wrongAction = false;
                             break;
                         case "C":
                             container.RentVehicle();
-                            wrongChar = false;
+                            wrongAction = false;
                             break;
                         case "D":
                             generator.GeneratingVehicles();
-                            wrongChar = false;
+                            wrongAction = false;
                             break;
                         case "E":
                             generator.GeneratingRentals();
-                            wrongChar = false;
+                            wrongAction = false;
                             break;
                         case "F":
-                            searcher.VehicleListOfBrand();
-                            wrongChar = false;
+                            if (VehiclesFileExists())
+                            {
+                                searcher.VehicleListOfBrand();
+                                wrongAction = false;
+                            } else
+                            {
+                                Console.WriteLine("Files does not exist. Try again, please");
+                                wrongAction = true;
+                            }
                             break;
                         case "G":
-                            searcher.PredeterminedVehiclesList();
-                            wrongChar = false;
+                            if (VehiclesFileExists())
+                            {
+                                searcher.PredeterminedVehiclesList();
+                                wrongAction = false;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Files does not exist. Try again, please");
+                                wrongAction = true;
+                            }
                             break;
                         case "H":
-                            searcher.TotalValueOfVehicles();
-                            wrongChar = false;
+                            if (VehiclesFileExists())
+                            {
+                                searcher.TotalValueOfVehicles();
+                                wrongAction = false;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Files does not exist. Try again, please");
+                                wrongAction = true;
+                            }
                             break;
                         case "I":
-                            searcher.VehicleListofBrandAndColor();
-                            wrongChar = false;
+                            if (VehiclesFileExists())
+                            {
+                                searcher.VehicleListofBrandAndColor();
+                                wrongAction = false;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Files does not exist. Try again, please");
+                                wrongAction = true;
+                            }
                             break;
                         case "J":
-                            searcher.ServiceNeededVehiclesList();
-                            wrongChar = false;
+                            if (VehiclesFileExists())
+                            {
+                                searcher.ServiceNeededVehiclesList();
+                                wrongAction = false;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Files does not exist. Try again, please");
+                                wrongAction = true;
+                            }
                             break;
                         default:
                             Console.WriteLine("Wrong symbol. Try again, please");
-                            wrongChar = true;
+                            wrongAction = true;
                             break;
                     }
                 }
                 continuing = Answer();
-                string waitingForAction = Console.ReadLine();
             }
             Console.WriteLine("The end of the program");
         }
@@ -138,13 +172,28 @@ namespace Homework2
                 }
             }
             Console.WriteLine("Please enter any key");
+            Console.ReadLine();
             return false;
         }
 
-        static void DelateFile(FileInfo file)
+        static void DelateFiles()
         {
-            if (file.Exists)
-                File.Delete(file.FullName);
+            foreach (FileInfo file in files)
+            {
+                if (file.Exists)
+                    File.Delete(file.FullName);
+            }
+        }
+
+        static bool VehiclesFileExists()
+        {
+            bool exist = false;
+            for(int i=0; i<2; i++)
+            {
+                if (files[i].Exists)
+                    exist = true;
+            }
+            return exist;
         }
     }
 }

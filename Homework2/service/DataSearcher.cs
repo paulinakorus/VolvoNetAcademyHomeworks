@@ -115,24 +115,24 @@ namespace Homework2.service
 
 
             var brandAndColorPassengerList = Container.PassengerList
-                .OrderBy(x => x.Brand)
+                .OrderBy(x => x.ComfortClass)
                 .Where(x => x.Brand == insertedBrand)
                 .Where(x => x.Color == insertedColor)
                 .ToList();
 
             var brandAndColorCargoList = Container.CargoList
-               .OrderBy(x => x.Model)
+               .OrderBy(x => x.ComfortClass)
                .Where(x => x.Brand == insertedBrand)
                .Where(x => x.Color == insertedColor)
                .ToList();
 
             List<Vehicle> resultList = new List<Vehicle>();
 
-            foreach (var vehicle in brandAndColorCargoList)
+            foreach (var vehicle in brandAndColorPassengerList)
             {
                 resultList.Add(vehicle);
             }
-            foreach (var vehicle in brandAndColorPassengerList)
+            foreach (var vehicle in brandAndColorCargoList)
             {
                 resultList.Add(vehicle);
             }
