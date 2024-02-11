@@ -5,6 +5,7 @@ namespace Homework3.service;
 public class ZipFileOpener
 {
     string fullPathOfNewFolder = @"C:\Users\pauko\Desktop\Studia\Kursy\Volvo NET Academy\Homework\Homework3\data";
+    private readonly object _locker = new object();
 
     public void OpenZip(string filePath)
     {
@@ -12,17 +13,22 @@ public class ZipFileOpener
 
         using (ZipArchive archive = ZipFile.OpenRead(filePath))
         {
-            foreach (ZipArchiveEntry entry in archive.Entries)
+            Parallel.ForEach(archive.Entries, (entry) =>
             {
-                //string nameOfTXT = GettingNameOfTXT(entry);
                 GettingNameOfTXT(entry);
                 if (entry.Name.EndsWith(".txt"))
                 {
                     string destinationPath = Path.GetFullPath(Path.Combine(fullPathOfNewFolder, entry.FullName));
                     if (destinationPath.StartsWith(fullPathOfNewFolder) && !File.Exists(destinationPath))
-                        entry.ExtractToFile(destinationPath);
+                    {
+                        lock (_locker)
+                        {
+                            entry.ExtractToFile(destinationPath);
+                        }
+                    }
+                        
                 }
-            }
+            });
         }
     }
 
@@ -37,16 +43,16 @@ public class ZipFileOpener
     {
         string nameOfFile = entry.FullName;
         
-        if (nameOfFile.Contains(@"/"))
+        if (nameOfFile.Contains(@"/") || nameOfFile.Contains(@"\\"))
         {
-            int index = nameOfFile.IndexOf(@"/");
-            string nameOfDirectory = nameOfFile.Substring(0, index);
-            //string nameOfTXT = nameOfFile.Substring(index+1);
-            string fullPath = Path.Combine(fullPathOfNewFolder, nameOfDirectory);
+            string directorySeparator = @"/";
+            if (nameOfFile.Contains(@"\\"))
+                directorySeparator = @"\\";
+
+            var splitted = nameOfFile.Split(directorySeparator);
+            string fullPath = Path.Combine(fullPathOfNewFolder, splitted[0]);
             if(!Directory.Exists(fullPath))
                 Directory.CreateDirectory(fullPath);
-            //return nameOfTXT;
         }
-        //return "";
     }
 }
