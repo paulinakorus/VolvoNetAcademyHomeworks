@@ -8,6 +8,8 @@ namespace Homework2.model
 {
     public class PassengerVehicle : Vehicle
     {
+
+        public static decimal MonetaryValueLossPerYear = 0.1m;
         public double AverageLesseeRating { get; set; }
         public static List<PassengerVehicle> passengerVehicleList { get; set; } = new List<PassengerVehicle>();
         private double sumOfLesseeRatings;
@@ -20,9 +22,16 @@ namespace Homework2.model
             numberOfLesseeRatings = 0;
         }
 
-        public void synchronizeAverageLesseeRating(double rating)
+        public void synchronizeToRent(RentPassengerVehicle rent)
         {
-            AverageLesseeRating = (sumOfLesseeRatings+rating)/(++numberOfLesseeRatings);
+            base.synchronizeToRent(rent);
+            AverageLesseeRating = (sumOfLesseeRatings + rent.LesseeRating) / (++numberOfLesseeRatings);
+        }
+
+        public override decimal GetVehicleMonetaryValue()
+        {
+            var yearLose = 0.1m;
+            return VehicleValue(yearLose);
         }
     }
 }

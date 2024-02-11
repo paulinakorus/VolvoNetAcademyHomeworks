@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Homework2.model
 {
-    public class Vehicle
+    public abstract class Vehicle
     {
         private static int lastId = 0;
         public int Id { get; set; }
@@ -30,10 +30,26 @@ namespace Homework2.model
             DurationOfTheTrips = 0;
         }
 
-        public void synchronizeToRent(Rent rent)
+        protected void synchronizeToRent(Rent rent)
         {
             TravelDistance += rent.TravelDistance;
             DurationOfTheTrips += rent.DurationOfTheTrip;
+        }
+
+        public abstract decimal GetVehicleMonetaryValue();
+
+        protected decimal VehicleValue(decimal losePerYear)
+        {
+           decimal totalValue = this.Price;
+
+            for (int i = this.YearOfManufacture; i <= DateTime.Now.Year; i++)
+            {
+                if (totalValue >= (losePerYear * this.Price))
+                    totalValue -= (losePerYear * this.Price);
+                else
+                    return 0;
+            }
+            return totalValue;
         }
 
         public void PutComfortClass()

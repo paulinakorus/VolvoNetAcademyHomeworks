@@ -46,6 +46,8 @@ namespace Homework2.service
                 .Where(x => x.TravelDistance > 100000 || (DateTime.Now.Year - x.YearOfManufacture) > 5)
                 .ToList();
 
+            var greaterThan5 = new int[] { 1, 2, 6, 8, 2, 7, 9, 2, 4, 6, 2, 6, 8, 9 }.OrderBy(x => x).TakeWhile(x => x <= 5);
+
             var predeterminedCargoList = Container.CargoList
                .OrderBy(x => x.Model)
                .Where(x => x.Model == insertedModel)
@@ -104,49 +106,29 @@ namespace Homework2.service
 
 
             var resultList = vehicleList
-                .OrderBy(x => x.ComfortClass)
                 .Where(x => x.Brand == insertedBrand)
                 .Where(x => x.Color == insertedColor)
+                .OrderBy(x => x.ComfortClass)
                 .ToList();
 
             return resultList;
         }
 
-        public double TotalValueOfVehicles()
+        public decimal TotalValueOfVehicles()
         {
             Container.ReadVehicleFiles();
 
-            var totalValue = 0.0d;
-            double yearLose;
-            double oneValue;
-
-            foreach (var vehicle in Container.PassengerList)
-            {
-                yearLose = (vehicle.GetType() == typeof(PassengerVehicle)) ? 0.1 : 0.07;
-                oneValue = VehicleValue(vehicle, yearLose);
-                totalValue += oneValue;
-            }
-            foreach (var vehicle in Container.CargoList)
-            {
-                yearLose = (vehicle.GetType() == typeof(CargoVehicle)) ? 0.1 : 0.07;
-                oneValue = VehicleValue(vehicle, yearLose);
-                totalValue += oneValue;
-            }
+            var totalValue = Container.PassengerList.Select(v => v.GetVehicleMonetaryValue()).Sum();
+            //totalValue += 
+            //foreach (var vehicle in Container.CargoList)
+            //{
+            //    yearLose = (vehicle.GetType() == typeof(CargoVehicle)) ? 0.1 : 0.07;
+            //    oneValue = VehicleValue(vehicle, yearLose);
+            //    totalValue += oneValue;
+            //}
 
             return totalValue;
         }
-        private double VehicleValue(Vehicle vehicle, double losePerYear)
-        {
-            double totalValue = vehicle.Price;
 
-            for (int i = vehicle.YearOfManufacture; i <= DateTime.Now.Year; i++)
-            {
-                if (totalValue >= (losePerYear * vehicle.Price))
-                    totalValue -= (losePerYear * vehicle.Price);
-                else
-                    return 0;
-            }
-            return totalValue;
-        }
     }
 }

@@ -20,7 +20,7 @@ namespace Homework2
             string passengerVehiclePath = Path.Combine(beginningPath, "PassengerVehicleFile.txt");
             string cargoVehiclePath = Path.Combine(beginningPath, "CargoVehicleFile.txt");
             string passengerRentalPath = Path.Combine(beginningPath, "PassengerRentalFile.txt");
-            string cargoRentalPath = Path.Combine(beginningPath, "CargoRentalFile.txt");
+            string cargoRentalPath = Path.Combine("./", "CargoRentalFile.txt");
             string[] files = { passengerVehiclePath, cargoVehiclePath, passengerRentalPath, cargoRentalPath };
 
             DelateData(files);
@@ -28,6 +28,29 @@ namespace Homework2
             Container container = new Container();
             GeneratingData generator = new GeneratingData(passengerVehiclePath, cargoVehiclePath, passengerRentalPath, cargoRentalPath, container);
             DataSearcher searcher = new DataSearcher(container);
+
+
+            var menuOptions = new (string text, string key, Action action)[]
+            {
+                ("Do A", "a", () => Console.WriteLine("A")),
+                ("Do B" , "b", () =>
+                {
+                    container.RemoveVehicle();
+                })
+            };
+
+            foreach(var (text, key, _ ) in menuOptions)
+            {
+                Console.WriteLine($"{key} - {text}");
+            }
+
+            string keyChosen = Console.ReadLine();
+
+            var action = menuOptions.Where(x => x.key == keyChosen.ToLower()).FirstOrDefault().action;
+            if (action != null )
+            {
+                action();
+            }
 
             bool continuing = true;
             while (continuing)
