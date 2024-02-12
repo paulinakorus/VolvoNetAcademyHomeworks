@@ -7,7 +7,7 @@ public class ZipFileOpener
     string fullPathOfNewFolder = @"C:\Users\pauko\Desktop\Studia\Kursy\Volvo NET Academy\Homework\Homework3\data";
     private readonly object _locker = new object();
 
-    public void OpenZip(string filePath)
+    public void OpenZipAsync(string filePath)
     {
         IfEndsWithDirectorySeparator(fullPathOfNewFolder);
 

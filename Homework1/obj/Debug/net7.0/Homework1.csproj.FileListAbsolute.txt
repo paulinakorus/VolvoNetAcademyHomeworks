@@ -12,3 +12,17 @@ C:\Users\pauko\Desktop\Homework\Homework1\obj\Debug\net7.0\refint\Homework1.dll
 C:\Users\pauko\Desktop\Homework\Homework1\obj\Debug\net7.0\Homework1.pdb
 C:\Users\pauko\Desktop\Homework\Homework1\obj\Debug\net7.0\Homework1.genruntimeconfig.cache
 C:\Users\pauko\Desktop\Homework\Homework1\obj\Debug\net7.0\ref\Homework1.dll
+C:\Users\pauko\Desktop\Studia\Kursy\Volvo NET Academy\Homework\Homework1\bin\Debug\net7.0\Homework1.exe
+C:\Users\pauko\Desktop\Studia\Kursy\Volvo NET Academy\Homework\Homework1\bin\Debug\net7.0\Homework1.deps.json
+C:\Users\pauko\Desktop\Studia\Kursy\Volvo NET Academy\Homework\Homework1\bin\Debug\net7.0\Homework1.runtimeconfig.json
+C:\Users\pauko\Desktop\Studia\Kursy\Volvo NET Academy\Homework\Homework1\bin\Debug\net7.0\Homework1.dll
+C:\Users\pauko\Desktop\Studia\Kursy\Volvo NET Academy\Homework\Homework1\bin\Debug\net7.0\Homework1.pdb
+C:\Users\pauko\Desktop\Studia\Kursy\Volvo NET Academy\Homework\Homework1\obj\Debug\net7.0\Homework1.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\pauko\Desktop\Studia\Kursy\Volvo NET Academy\Homework\Homework1\obj\Debug\net7.0\Homework1.AssemblyInfoInputs.cache
+C:\Users\pauko\Desktop\Studia\Kursy\Volvo NET Academy\Homework\Homework1\obj\Debug\net7.0\Homework1.AssemblyInfo.cs
+C:\Users\pauko\Desktop\Studia\Kursy\Volvo NET Academy\Homework\Homework1\obj\Debug\net7.0\Homework1.csproj.CoreCompileInputs.cache
+C:\Users\pauko\Desktop\Studia\Kursy\Volvo NET Academy\Homework\Homework1\obj\Debug\net7.0\Homework1.dll
+C:\Users\pauko\Desktop\Studia\Kursy\Volvo NET Academy\Homework\Homework1\obj\Debug\net7.0\refint\Homework1.dll
+C:\Users\pauko\Desktop\Studia\Kursy\Volvo NET Academy\Homework\Homework1\obj\Debug\net7.0\Homework1.pdb
+C:\Users\pauko\Desktop\Studia\Kursy\Volvo NET Academy\Homework\Homework1\obj\Debug\net7.0\Homework1.genruntimeconfig.cache
+C:\Users\pauko\Desktop\Studia\Kursy\Volvo NET Academy\Homework\Homework1\obj\Debug\net7.0\ref\Homework1.dll
