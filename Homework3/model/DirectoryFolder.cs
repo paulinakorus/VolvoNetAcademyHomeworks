@@ -7,7 +7,6 @@ using System.IO;
 using System.Text.RegularExpressions;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Text.Json;
-using System.Reflection.PortableExecutable;
 
 namespace Homework3.model;
 
@@ -22,32 +21,22 @@ internal class DirectoryFolder
             var files = Directory.GetFiles(filePath);
             var tasks = new List<Task>();
 
-            /*Parallel.ForEach(files, (file) =>
+            foreach (var file in files)
             {
                 var task = WorkingWithFile(file);
                 lock (_locker)
                 {
                     tasks.Add(task);
                 }
-            });
-            await Task.WhenAll(tasks);*/
+            }
+            await Task.WhenAll(tasks);
 
-            /*foreach (var file in files)
-            {
-                await WorkingWithFile(file);
-                /*lock (_locker)
-                {
-                    tasks.Add(task);
-                }*/
-            //}
-            //await Task.WhenAll(tasks);
-
-            string file_Path = @"C:\Users\pauko\Desktop\Studia\Kursy\Volvo NET Academy\Homework\Homework3\data\100 books\pg10007.txt";
-            var task = WorkingWithFile(file_Path);
-            await task;
-            string file_Path2 = @"C:\Users\pauko\Desktop\Studia\Kursy\Volvo NET Academy\Homework\Homework3\data\100 books\pg1080.txt";
-            var task2 = WorkingWithFile(file_Path2);
-            await task2;
+            //string file_Path = @"C:\Users\pauko\Desktop\Studia\Kursy\Volvo NET Academy\Homework\Homework3\data\100 books\pg10007.txt";
+            //var task = WorkingWithFile(file_Path);
+            //await task;
+            //string file_Path2 = @"C:\Users\pauko\Desktop\Studia\Kursy\Volvo NET Academy\Homework\Homework3\data\100 books\pg1080.txt";
+            //var task2 = WorkingWithFile(file_Path2);
+            //await task2;
         }
     }
 
@@ -73,6 +62,12 @@ internal class DirectoryFolder
             sortedWords.Result
         };
         await WriteToFileAsync(file, resultList);
+        
+        /*using (StreamReader reader = new StreamReader(File.OpenRead(filePath)))   moving reader buffer in different place
+        {
+            string line = await reader.ReadLineAsync();
+            Console.WriteLine(line);
+        }*/
     }
 
     private async Task WriteToFileAsync (FileTXT file, List<string> resultList)
@@ -102,7 +97,7 @@ internal class DirectoryFolder
         return !string.IsNullOrWhiteSpace(line) && line.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Length > 0;
     }
 
-    public async Task<List<Paragraph>> GetDataFromFileAsyncAndSplitToParagraphs(string path)
+    public async Task<List<Paragraph>> GetDataFromFileAsyncAndSplitToParagraphs(string path)                        // The next time it is played back, the previous output appears on the input
     {
         var paragraphsList = new List<Paragraph>();
         var list = new List<string>();
