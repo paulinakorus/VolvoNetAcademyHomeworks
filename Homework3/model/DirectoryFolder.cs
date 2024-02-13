@@ -7,6 +7,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Text.Json;
+using System.Reflection.PortableExecutable;
 
 namespace Homework3.model;
 
@@ -81,7 +82,7 @@ internal class DirectoryFolder
         {
             foreach (string line in resultList) 
             {
-                await input.WriteLineAsync(line).ConfigureAwait(false); ;
+                await input.WriteLineAsync(line).ConfigureAwait(false);;
             }
             input.Close();
         }
@@ -169,6 +170,7 @@ internal class DirectoryFolder
                     }
                 }
             }
+            reader.Dispose();
             return paragraphsList;
         }
     }
