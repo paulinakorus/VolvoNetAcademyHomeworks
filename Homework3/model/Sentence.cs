@@ -12,20 +12,23 @@ internal class Sentence
     public string Text { get; set; }
     public List<Word> WordsList { get; set; }
     public List<Punctation> PunctationList { get; set; }
+    public int NumberOfCharacters { get; set; }
     private readonly object _locker = new object();
 
     public Sentence(string text) 
-    { 
+    {
         Text = text;
         WordsList = new List<Word>();
         PunctationList = new List<Punctation>();
         ParseToPunctationsAndWords();
+        GettingNumberOfCharacters();
     }
 
     private void ParseToPunctationsAndWords()
     {
+        var textToWorkOn = Text;
         string patternForPunctations = @"[\p{P}\p{S}]";
-        string[] punctations = Regex.Matches(Text, patternForPunctations)
+        string[] punctations = Regex.Matches(textToWorkOn, patternForPunctations)
             .OfType<Match>()
             .Select(match => match.Value)
             .ToArray();
@@ -39,10 +42,10 @@ internal class Sentence
             }
         });
 
-        Text = Regex.Replace(Text, patternForPunctations, "");
+        textToWorkOn = Regex.Replace(textToWorkOn, patternForPunctations, "");
 
         string patternForWords = @"\s+";
-        string[] words = Regex.Split(Text, patternForWords);
+        string[] words = Regex.Split(textToWorkOn, patternForWords);
 
         Parallel.ForEach(words, word =>
         {
@@ -53,5 +56,26 @@ internal class Sentence
                 WordsList.Add(wordClass);
             }
         });
+    }
+
+    private void GettingNumberOfCharacters()
+    {
+        int numberOfCharacters = 0;
+        Parallel.ForEach(WordsList, (word) =>
+        {
+            lock (_locker)
+            {
+                numberOfCharacters += word.LettersNumber;
+            }
+        });
+
+        Parallel.ForEach(PunctationList, (punctation) =>
+        {
+            lock (_locker)
+            {
+                numberOfCharacters += punctation.Text.Length;
+            }
+        });
+        NumberOfCharacters = numberOfCharacters;
     }
 }

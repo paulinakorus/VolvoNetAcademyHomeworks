@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Globalization;
 
 namespace Homework3.model;
 
@@ -29,7 +30,7 @@ internal class DirectoryFolder
             });
             await Task.WhenAll(tasks);*/
 
-            string file_Path = @"C:\Users\pauko\Desktop\Studia\Kursy\Volvo NET Academy\Homework\Homework3\data\100 books\pg158.txt";
+            string file_Path = @"C:\Users\pauko\Desktop\Studia\Kursy\Volvo NET Academy\Homework\Homework3\data\100 books\pg1232.txt";
             var task = WorkingWithFile(file_Path);
             await task;
         }
@@ -38,20 +39,10 @@ internal class DirectoryFolder
     private async Task WorkingWithFile(string filePath)
     {
         List<Paragraph> paragraphsList = await GetDataFromFileAsyncAndSplitToParagraphs(filePath);
-        List<Sentence> allSentences = new List<Sentence>();
-
-        Parallel.ForEach(paragraphsList, (paragraph) => 
-        {
-            if (paragraph != null)
-            {
-                //paragraph.ParseToSentences();
-                lock (_locker)
-                {
-                    allSentences.AddRange(paragraph.SentencesList);
-                }
-            }
-        });
-        File file = new File(paragraphsList, allSentences);
+        FileTXT file = new FileTXT(paragraphsList);
+        string longestSentenceByChar = file.LongestSentenceByChars();
+        string shortestSentenceByWords = file.ShortestSentenceByWords();
+        string longestWord = file.LongestWord();
     }
 
     private bool IfRemoveLine(string text, string[] wordsToRemove)

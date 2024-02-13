@@ -42,7 +42,7 @@ internal class Paragraph
             sentences.Add(sentence.Trim());
             match = match.NextMatch();
         }
-         */
+        */
 
         Parallel.ForEach(sentences, sentence =>
         {
