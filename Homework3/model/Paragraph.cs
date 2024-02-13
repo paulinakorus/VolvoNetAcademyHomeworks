@@ -17,9 +17,10 @@ internal class Paragraph
     {
         Text = text;
         SentencesList = new List<Sentence>();
+        ParseToSentences();
     }
 
-    public void ParseToSentences()
+    private void ParseToSentences()
     {
         //string[] wordsToSkip = { "Dr.", "Mr.", "Ms."};
         string pattern = @"(?<=[\.!\?])\s+";

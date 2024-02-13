@@ -34,8 +34,6 @@ internal class DirectoryFolder
 
     private async Task WorkingWithFile(string filePath)
     {
-        //var text = await File.ReadAllTextAsync(filePath);
-        //var text = await GetDataFromFileAsync(filePath);
         List<Paragraph> paragraphsList = await GetDataFromFileAsyncAndSplitToParagraphs(filePath);
         List<Sentence> allSentences = new List<Sentence>();
 
@@ -43,14 +41,14 @@ internal class DirectoryFolder
         {
             if (paragraph != null)
             {
-                paragraph.ParseToSentences();
+                //paragraph.ParseToSentences();
                 lock (_locker)
                 {
                     allSentences.AddRange(paragraph.SentencesList);
                 }
             }
         });
-        //List<Sentence> sentences = allSentences;
+        List<Sentence> sentences = allSentences;
     }
 
     private bool IfRemoveLine(string text, string[] wordsToRemove)

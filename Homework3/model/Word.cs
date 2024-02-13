@@ -16,4 +16,9 @@ internal class Word
         Text = text;
         LettersNumber = 0;
     }
+
+    private void CountLettersOrDigit()
+    {
+        LettersNumber = Text.Length;
+    }
 }
