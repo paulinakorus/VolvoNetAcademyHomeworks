@@ -26,7 +26,7 @@ internal class DirectoryFolder
             });
             await Task.WhenAll(tasks);*/
 
-            string file_Path = @"C:\Users\pauko\Desktop\Studia\Kursy\Volvo NET Academy\Homework\Homework3\data\100 books\pg120.txt";
+            string file_Path = @"C:\Users\pauko\Desktop\Studia\Kursy\Volvo NET Academy\Homework\Homework3\data\100 books\pg10007.txt";
             var task = WorkingWithFile(file_Path);
             await task;
         }
@@ -36,8 +36,18 @@ internal class DirectoryFolder
     {
         //var text = await File.ReadAllTextAsync(filePath);
         //var text = await GetDataFromFileAsync(filePath);
-        await GetDataFromFileAsync(filePath);
-        //Console.WriteLine(text);
+        List<Paragraph> paragraphsList = await GetDataFromFileAsyncAndSplitToParagraphs(filePath);
+        List<Sentence> allSentences = new List<Sentence>();
+
+        foreach (Paragraph paragraph in paragraphsList)
+        {
+            if (paragraph != null)
+            {
+                paragraph.ParseToSentences();
+                allSentences.AddRange(paragraph.SentencesList);
+            }
+        }
+        List<Sentence> sentences = allSentences;
 
         //string[] sentences = Regex.Split(text, @"(?<=[\.!\?])\s+");
     }
@@ -56,7 +66,7 @@ internal class DirectoryFolder
         return !string.IsNullOrWhiteSpace(line) && line.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Length > 0;
     }
 
-    public async Task GetDataFromFileAsync(string path)
+    public async Task<List<Paragraph>> GetDataFromFileAsyncAndSplitToParagraphs(string path)
     {
         var paragraphsList = new List<Paragraph>();
         var list = new List<string>();
@@ -104,21 +114,15 @@ internal class DirectoryFolder
                             list.Clear();
                             ifSentence = false;
                         }
-                            
                     }
                     else
                     {
                         list.Add(line);
                         ifSentence = (line.EndsWith(".") || line.EndsWith("”"))? true : false;
                     }
-
-
-
-                    //list.Add(line);
                 }
             }
-            //return list.Aggregate((current, line) => current += line);
-            List<Paragraph> test = paragraphsList;
+            return paragraphsList;
         }
     }
 }
