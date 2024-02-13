@@ -44,12 +44,15 @@ internal class DirectoryFolder
             string file_Path = @"C:\Users\pauko\Desktop\Studia\Kursy\Volvo NET Academy\Homework\Homework3\data\100 books\pg10007.txt";
             var task = WorkingWithFile(file_Path);
             await task;
+            string file_Path2 = @"C:\Users\pauko\Desktop\Studia\Kursy\Volvo NET Academy\Homework\Homework3\data\100 books\pg1080.txt";
+            var task2 = WorkingWithFile(file_Path2);
+            await task2;
         }
     }
 
     private async Task WorkingWithFile(string filePath)
     {
-        List<Paragraph> paragraphsList = GetDataFromFileAsyncAndSplitToParagraphs(filePath);
+        List<Paragraph> paragraphsList = await GetDataFromFileAsyncAndSplitToParagraphs(filePath);
         FileTXT file = new FileTXT(paragraphsList);
 
         var longestSentenceByChar = file.LongestSentenceByChars();
@@ -78,7 +81,7 @@ internal class DirectoryFolder
         {
             foreach (string line in resultList) 
             {
-                input.WriteLineAsync(line);
+                await input.WriteLineAsync(line).ConfigureAwait(false); ;
             }
             input.Close();
         }
@@ -98,7 +101,7 @@ internal class DirectoryFolder
         return !string.IsNullOrWhiteSpace(line) && line.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Length > 0;
     }
 
-    public List<Paragraph> GetDataFromFileAsyncAndSplitToParagraphs(string path)
+    public async Task<List<Paragraph>> GetDataFromFileAsyncAndSplitToParagraphs(string path)
     {
         var paragraphsList = new List<Paragraph>();
         var list = new List<string>();
@@ -115,7 +118,7 @@ internal class DirectoryFolder
         {
             while (!reader.EndOfStream)
             {
-                var line = reader.ReadLine();
+                var line = await reader.ReadLineAsync().ConfigureAwait(false); ;
                 if (!ifFoundTitle)
                 {
                     if (line.Contains(titlePattern))
@@ -161,10 +164,7 @@ internal class DirectoryFolder
                     }
                     else
                     {
-                        lock (_locker)
-                        {
-                            list.Add(line);
-                        }
+                        list.Add(line);
                         ifSentence = (line.EndsWith(".") || line.EndsWith("”")) ? true : false;
                     }
                 }
