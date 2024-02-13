@@ -5,7 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Text.RegularExpressions;
-using System.Globalization;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Text.Json;
 
 namespace Homework3.model;
 
@@ -30,7 +31,17 @@ internal class DirectoryFolder
             });
             await Task.WhenAll(tasks);*/
 
-            string file_Path = @"C:\Users\pauko\Desktop\Studia\Kursy\Volvo NET Academy\Homework\Homework3\data\100 books\pg1232.txt";
+            /*foreach (var file in files)
+            {
+                await WorkingWithFile(file);
+                /*lock (_locker)
+                {
+                    tasks.Add(task);
+                }*/
+            //}
+            //await Task.WhenAll(tasks);
+
+            string file_Path = @"C:\Users\pauko\Desktop\Studia\Kursy\Volvo NET Academy\Homework\Homework3\data\100 books\pg10007.txt";
             var task = WorkingWithFile(file_Path);
             await task;
         }
@@ -38,11 +49,39 @@ internal class DirectoryFolder
 
     private async Task WorkingWithFile(string filePath)
     {
-        List<Paragraph> paragraphsList = await GetDataFromFileAsyncAndSplitToParagraphs(filePath);
+        List<Paragraph> paragraphsList = GetDataFromFileAsyncAndSplitToParagraphs(filePath);
         FileTXT file = new FileTXT(paragraphsList);
-        string longestSentenceByChar = file.LongestSentenceByChars();
-        string shortestSentenceByWords = file.ShortestSentenceByWords();
-        string longestWord = file.LongestWord();
+
+        var longestSentenceByChar = file.LongestSentenceByChars();
+        var shortestSentenceByWords = file.ShortestSentenceByWords();
+        var longestWord = file.LongestWord();
+        var mostCommonLetter = file.FindMostCommonLetter();
+        var sortedWords = file.SortedWordsByOccurance();
+
+        await Task.WhenAll(longestSentenceByChar, shortestSentenceByWords, longestWord, mostCommonLetter, sortedWords);
+        
+        List<string> resultList = new List<string>
+        {
+            longestSentenceByChar.Result,
+            shortestSentenceByWords.Result,
+            longestWord.Result,
+            mostCommonLetter.Result,
+            sortedWords.Result
+        };
+        await WriteToFileAsync(file, resultList);
+    }
+
+    private async Task WriteToFileAsync (FileTXT file, List<string> resultList)
+    {
+        var filePath = @"C:\Users\pauko\Desktop\Studia\Kursy\Volvo NET Academy\Homework\Homework3\data\results\" + file.Title + ".txt";
+        using (StreamWriter input = new StreamWriter(filePath, false))
+        {
+            foreach (string line in resultList) 
+            {
+                input.WriteLineAsync(line);
+            }
+            input.Close();
+        }
     }
 
     private bool IfRemoveLine(string text, string[] wordsToRemove)
@@ -59,23 +98,35 @@ internal class DirectoryFolder
         return !string.IsNullOrWhiteSpace(line) && line.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Length > 0;
     }
 
-    public async Task<List<Paragraph>> GetDataFromFileAsyncAndSplitToParagraphs(string path)
+    public List<Paragraph> GetDataFromFileAsyncAndSplitToParagraphs(string path)
     {
         var paragraphsList = new List<Paragraph>();
         var list = new List<string>();
         bool foundStart = false;
         bool ifSentence = false;
+        bool ifFoundTitle = false;
+        string titlePattern = "Title: ";
         string startPattern = "START";
         string endPattern = "END";
         string seperationPattern = "***";
-        string[] wordsToRemove = {"chapter", "volume"};
+        string[] wordsToRemove = { "chapter", "volume" };
 
         using (var reader = new StreamReader(File.OpenRead(path)))
         {
             while (!reader.EndOfStream)
             {
-                var line = await reader.ReadLineAsync();
-                if (!foundStart)
+                var line = reader.ReadLine();
+                if (!ifFoundTitle)
+                {
+                    if (line.Contains(titlePattern))
+                    {
+                        line = line.Replace(titlePattern, "");
+                        Paragraph titleLine = new Paragraph(line);
+                        paragraphsList.Add(titleLine);
+                        ifFoundTitle = true;
+                    }
+                }
+                else if (!foundStart)
                 {
                     if (line.Contains(startPattern) && line.Contains(seperationPattern))
                     {
@@ -96,7 +147,7 @@ internal class DirectoryFolder
                     {
                         if (ifSentence)
                         {
-                            string text = list.Aggregate((current, line) => current += (" "+ line));
+                            string text = list.Aggregate((current, line) => current += (" " + line));
                             Paragraph paragraph = new Paragraph(text);
                             paragraphsList.Add(paragraph);
                             ifSentence = false;
@@ -110,8 +161,11 @@ internal class DirectoryFolder
                     }
                     else
                     {
-                        list.Add(line);
-                        ifSentence = (line.EndsWith(".") || line.EndsWith("”"))? true : false;
+                        lock (_locker)
+                        {
+                            list.Add(line);
+                        }
+                        ifSentence = (line.EndsWith(".") || line.EndsWith("”")) ? true : false;
                     }
                 }
             }
