@@ -15,6 +15,7 @@ internal class Word
     { 
         Text = text;
         LettersNumber = 0;
+        CountLettersOrDigit();
     }
 
     private void CountLettersOrDigit()

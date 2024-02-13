@@ -22,11 +22,14 @@ internal class DirectoryFolder
             /*Parallel.ForEach(files, (file) =>
             {
                 var task = WorkingWithFile(file);
-                tasks.Add(task);
+                lock (_locker)
+                {
+                    tasks.Add(task);
+                }
             });
             await Task.WhenAll(tasks);*/
 
-            string file_Path = @"C:\Users\pauko\Desktop\Studia\Kursy\Volvo NET Academy\Homework\Homework3\data\100 books\pg10007.txt";
+            string file_Path = @"C:\Users\pauko\Desktop\Studia\Kursy\Volvo NET Academy\Homework\Homework3\data\100 books\pg158.txt";
             var task = WorkingWithFile(file_Path);
             await task;
         }
@@ -48,7 +51,7 @@ internal class DirectoryFolder
                 }
             }
         });
-        List<Sentence> sentences = allSentences;
+        File file = new File(paragraphsList, allSentences);
     }
 
     private bool IfRemoveLine(string text, string[] wordsToRemove)
@@ -74,7 +77,7 @@ internal class DirectoryFolder
         string startPattern = "START";
         string endPattern = "END";
         string seperationPattern = "***";
-        string[] wordsToRemove = {"chapter"};
+        string[] wordsToRemove = {"chapter", "volume"};
 
         using (var reader = new StreamReader(File.OpenRead(path)))
         {
@@ -102,7 +105,7 @@ internal class DirectoryFolder
                     {
                         if (ifSentence)
                         {
-                            string text = list.Aggregate((current, line) => current += line);
+                            string text = list.Aggregate((current, line) => current += (" "+ line));
                             Paragraph paragraph = new Paragraph(text);
                             paragraphsList.Add(paragraph);
                             ifSentence = false;
