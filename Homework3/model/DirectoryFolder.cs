@@ -39,17 +39,18 @@ internal class DirectoryFolder
         List<Paragraph> paragraphsList = await GetDataFromFileAsyncAndSplitToParagraphs(filePath);
         List<Sentence> allSentences = new List<Sentence>();
 
-        foreach (Paragraph paragraph in paragraphsList)
+        Parallel.ForEach(paragraphsList, (paragraph) => 
         {
             if (paragraph != null)
             {
                 paragraph.ParseToSentences();
-                allSentences.AddRange(paragraph.SentencesList);
+                lock (_locker)
+                {
+                    allSentences.AddRange(paragraph.SentencesList);
+                }
             }
-        }
-        List<Sentence> sentences = allSentences;
-
-        //string[] sentences = Regex.Split(text, @"(?<=[\.!\?])\s+");
+        });
+        //List<Sentence> sentences = allSentences;
     }
 
     private bool IfRemoveLine(string text, string[] wordsToRemove)
