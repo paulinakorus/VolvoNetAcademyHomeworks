@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 
 namespace Homework3.model;
 
-public class DirectoryFolder
+internal class DirectoryFolder
 {
     private string filePath = @"C:\Users\pauko\Desktop\Studia\Kursy\Volvo NET Academy\Homework\Homework3\data\100 books\";
     private readonly object _locker = new object();
@@ -26,7 +26,7 @@ public class DirectoryFolder
             });
             await Task.WhenAll(tasks);*/
 
-            string file_Path = @"C:\Users\pauko\Desktop\Studia\Kursy\Volvo NET Academy\Homework\Homework3\data\100 books\pg10007.txt";
+            string file_Path = @"C:\Users\pauko\Desktop\Studia\Kursy\Volvo NET Academy\Homework\Homework3\data\100 books\pg120.txt";
             var task = WorkingWithFile(file_Path);
             await task;
         }
@@ -35,8 +35,9 @@ public class DirectoryFolder
     private async Task WorkingWithFile(string filePath)
     {
         //var text = await File.ReadAllTextAsync(filePath);
-        var text = await GetDataFromFileAsync(filePath);
-        Console.WriteLine(text);
+        //var text = await GetDataFromFileAsync(filePath);
+        await GetDataFromFileAsync(filePath);
+        //Console.WriteLine(text);
 
         //string[] sentences = Regex.Split(text, @"(?<=[\.!\?])\s+");
     }
@@ -50,11 +51,17 @@ public class DirectoryFolder
         }
         return false;
     }
-
-    public async Task<string> GetDataFromFileAsync(string path)
+    private bool ContainsWords(string line)
     {
+        return !string.IsNullOrWhiteSpace(line) && line.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Length > 0;
+    }
+
+    public async Task GetDataFromFileAsync(string path)
+    {
+        var paragraphsList = new List<Paragraph>();
         var list = new List<string>();
         bool foundStart = false;
+        bool ifSentence = false;
         string startPattern = "START";
         string endPattern = "END";
         string seperationPattern = "***";
@@ -82,10 +89,36 @@ public class DirectoryFolder
                 }
                 else
                 {
-                    list.Add(line);
+                    if (!ContainsWords(line))
+                    {
+                        if (ifSentence)
+                        {
+                            string text = list.Aggregate((current, line) => current += line);
+                            Paragraph paragraph = new Paragraph(text);
+                            paragraphsList.Add(paragraph);
+                            ifSentence = false;
+                            list.Clear();
+                        }
+                        else
+                        {
+                            list.Clear();
+                            ifSentence = false;
+                        }
+                            
+                    }
+                    else
+                    {
+                        list.Add(line);
+                        ifSentence = (line.EndsWith(".") || line.EndsWith("”"))? true : false;
+                    }
+
+
+
+                    //list.Add(line);
                 }
             }
-            return list.Aggregate((current, line) => current += line);
+            //return list.Aggregate((current, line) => current += line);
+            List<Paragraph> test = paragraphsList;
         }
     }
 }

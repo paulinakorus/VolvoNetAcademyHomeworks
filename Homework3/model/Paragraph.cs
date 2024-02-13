@@ -6,15 +6,14 @@ using System.Threading.Tasks;
 
 namespace Homework3.model;
 
-internal class Sentence
+internal class Paragraph
 {
     public string Text { get; set; }
-    public List<Word> WordsList { get; set; }
+    public List<Sentence> SentencesList { get; set; }
 
-    public Sentence(string text) 
-    { 
+    public Paragraph(string text) 
+    {
         Text = text;
-        WordsList = new List<Word>();
+        SentencesList = new List<Sentence>();
     }
-
 }
